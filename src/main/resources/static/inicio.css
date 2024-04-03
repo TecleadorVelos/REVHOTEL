@@ -1,0 +1,51 @@
+/* Estilos personalizados */
+        .bg-image {
+            /* Establecer la imagen de fondo */
+            background-image: url('Hotel2.jpg');
+            /* Ajustar el tamaño de la imagen de fondo */
+            background-size: cover;
+            /* Centrar la imagen de fondo */
+            background-position: center;
+            /* Fijar la imagen de fondo para que no se desplace con el contenido */
+            background-attachment: fixed;
+            /* Altura mínima para ocupar todo el viewport */
+            min-height: 100vh;
+        }
+        footer {
+            background-color: #343a40; /* Color de fondo */
+            color: #ffffff; /* Color del texto */
+            padding: 20px 0; /* Espaciado interno */
+            position:sticky;
+			top:100%;
+			overflow: hidden
+        }
+
+        /* Estilos para el texto del footer */
+        footer p {
+            margin-bottom: 0; /* Eliminar el margen inferior */
+            text-align: center; /* Centra el texto */
+        }
+        .caja-blanca {
+	
+			background-color: #fff; /* Fondo blanco */
+		    border-radius: 10px; /* Esquinas redondeadas */
+		    padding: 20px; /* Añadir espacio interno para el contenido */
+		}
+		.espacio-entre-contenedores {
+			margin-bottom: 20px;
+		}
+		.descripcion-empresa {
+			text-align: justify;
+			margin-left: auto;
+  			margin-right: auto;
+		}
+		.imagen-card {
+			max-width: 100%; /* Esto hará que la imagen no se extienda más allá del ancho del contenedor */
+			height: auto; /* Esto mantendrá la relación de aspecto original de la imagen */
+		}
+		.linea-vertical {
+		background-color: #ccc; /* Cambia el color según tus preferencias */
+    	width: 1px; /* Ancho de la línea */
+    	height: 100%; /* Ajusta la altura de la línea */
+		}
+	
