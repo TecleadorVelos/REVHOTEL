@@ -13,4 +13,13 @@ public class controladorWeb {
 	public String menuprincipal(Model model) {
 		return "inicio";
 	}
+	@GetMapping("/loginUsuarios")
+	public String loginUsuarios(Model model) {
+		return "loginUsuarios";
+	}
+	@GetMapping("/loginAdmin")
+	public String loginAdministrador(Model model) {
+		return "loginAdmin";
+	}
+	
 }
