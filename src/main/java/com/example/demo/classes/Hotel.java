@@ -1,4 +1,4 @@
-package com.example.classes;
+package com.example.demo.classes;
 
 import java.util.ArrayList;
 import javax.persistence.Entity;

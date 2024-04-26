@@ -5,17 +5,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.example.classes.HabitacionRepository;
-import com.example.classes.HotelRepository;
-import com.example.classes.ReservaRepository;
+import com.example.demo.classes.HabitacionRepository;
+import com.example.demo.classes.HotelRepository;
+import com.example.demo.classes.ReservaRepository;
 
 
 @Controller
 public class controladorWeb {
-	/*
+	
 	@Autowired
 	private HotelRepository repositorioHotel;
-	
+	/*
 	@Autowired
 	private HabitacionRepository repositorioHabitacion;
 	

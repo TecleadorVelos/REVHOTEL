@@ -1,4 +1,4 @@
-package com.example.classes;
+package com.example.demo.classes;
 
 public enum THabitacion {
 	SUITE, DOBLE, NORMAL
