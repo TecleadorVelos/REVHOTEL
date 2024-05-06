@@ -2,11 +2,13 @@ package com.example.demo.classes;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+
 
 
 
@@ -23,7 +25,10 @@ public class Habitacion {
 	@OneToMany
 	private List<Reserva> reservas;
 	
-	public Habitacion(THabitacion thabi, String number) {
+	@ManyToOne
+	private Hotel hotel;
+	
+	public Habitacion(Hotel hotel, String number, THabitacion thabi) {
 		
 		this.tipohabitacion = thabi;
 		this.numero = number;
@@ -44,6 +49,7 @@ public class Habitacion {
 			break;
 		}
 		reservas = null;
+		this.hotel = hotel;
 	}
 
 	public THabitacion getTipohabitacion() {
@@ -87,11 +93,26 @@ public class Habitacion {
 		this.reservas.add(res);
 	}
 	
-	public boolean eliminarReserva (Reserva res) {
+	public boolean eliminarReserva (Long id) {
 		boolean operacion = false;
-		operacion = this.reservas.remove(res);
+		Reserva res = null;
+		for (Reserva reservatemp: this.reservas) {
+			if (reservatemp.getId()== id) {
+				res = reservatemp;
+				operacion = true;
+			}
+		}
+		this.reservas.remove(res);
 		if (operacion == true) return true;
 		else return false;
+	}
+
+	public Hotel getHotel() {
+		return hotel;
+	}
+
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
 	}
 	
 	

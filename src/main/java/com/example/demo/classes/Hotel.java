@@ -1,11 +1,13 @@
 package com.example.demo.classes;
 
 import java.util.ArrayList;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
 
 
 
@@ -17,13 +19,13 @@ public class Hotel {
 		private Long hotelId;
 		private String nombre;
 		
-		@OneToMany
-		private ArrayList<Habitacion> habitaciones; //Podria mejorarse con un mapa, considerar en un futuro
+		@OneToMany(mappedBy = "hotel")
+		private ArrayList<Habitacion> habitaciones = new ArrayList<Habitacion>(); //Podria mejorarse con un mapa, considerar en un futuro
 		
 
 		public Hotel (String name) {
 			this.nombre = name;
-			habitaciones = new ArrayList<>();
+			this.habitaciones = null;
 		}
 
 
@@ -46,4 +48,21 @@ public class Hotel {
 			this.habitaciones = habitaciones;
 		}
 		
+		public void anadirHabitacion(Habitacion nuevaHabitacion) {
+			this.habitaciones.add(nuevaHabitacion);
+		}
+		
+		public boolean eliminarHabitacion (String numero) {
+			boolean operacion = false;
+			Habitacion hab = null;
+			for (Habitacion habitaciontemp: this.habitaciones) {
+				if (habitaciontemp.getNumero()== numero) {
+					hab = habitaciontemp;
+					operacion = true;
+				}
+			}
+			this.habitaciones.remove(hab);
+			if (operacion == true) return true;
+			else return false;
+		}
 }

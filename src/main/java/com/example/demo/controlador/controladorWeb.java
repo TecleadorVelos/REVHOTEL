@@ -15,14 +15,13 @@ public class controladorWeb {
 	
 	@Autowired
 	private HotelRepository repositorioHotel;
-	/*
+	
 	@Autowired
 	private HabitacionRepository repositorioHabitacion;
 	
 	@Autowired
 	private ReservaRepository repositorioReservas;
 	
-	*/
 	
 	@GetMapping("/")
 	public String menuprincipal(Model model) {
