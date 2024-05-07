@@ -1,7 +1,9 @@
 package com.example.demo.classes;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,10 +21,11 @@ public class Hotel {
 		private Long hotelId;
 		private String nombre;
 		
-		@OneToMany(mappedBy = "hotel")
-		private ArrayList<Habitacion> habitaciones = new ArrayList<Habitacion>(); //Podria mejorarse con un mapa, considerar en un futuro
+		@OneToMany(cascade=CascadeType.ALL, mappedBy="hotel")
+		private List<Habitacion> habitaciones = new ArrayList<Habitacion>(); //Podria mejorarse con un mapa, considerar en un futuro
 		
-
+		protected Hotel() {}
+		
 		public Hotel (String name) {
 			this.nombre = name;
 			this.habitaciones = null;
@@ -39,7 +42,7 @@ public class Hotel {
 		}
 
 
-		public ArrayList<Habitacion> getHabitaciones() {
+		public List<Habitacion> getHabitaciones() {
 			return habitaciones;
 		}
 

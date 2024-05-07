@@ -1,7 +1,9 @@
 package com.example.demo.classes;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,12 +24,13 @@ public class Habitacion {
 	private Integer precio; /* Precio por noche */
 	private String numero;
 	
-	@OneToMany
-	private List<Reserva> reservas;
+	@OneToMany(mappedBy="habitacion", cascade=CascadeType.ALL)
+	private List<Reserva> reservas = new ArrayList<>();
 	
 	@ManyToOne
 	private Hotel hotel;
 	
+	protected Habitacion() {}
 	public Habitacion(Hotel hotel, String number, THabitacion thabi) {
 		
 		this.tipohabitacion = thabi;
@@ -48,7 +51,7 @@ public class Habitacion {
 			this.precio = 25;
 			break;
 		}
-		reservas = null;
+		
 		this.hotel = hotel;
 	}
 
@@ -84,7 +87,7 @@ public class Habitacion {
 		return reservas;
 	}
 
-	public void setReservas(List<Reserva> reservas) {
+	public void setReservas(ArrayList<Reserva> reservas) {
 		this.reservas = reservas;
 	}
 	

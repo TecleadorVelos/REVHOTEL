@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.example.demo.classes.HabitacionRepository;
 import com.example.demo.classes.HotelRepository;
 import com.example.demo.classes.ReservaRepository;
+import com.example.demo.classes.UsuarioRepository;
 
 
 @Controller
@@ -21,6 +22,9 @@ public class controladorWeb {
 	
 	@Autowired
 	private ReservaRepository repositorioReservas;
+	
+	@Autowired
+	private UsuarioRepository reposiotrioUsuarios;
 	
 	
 	@GetMapping("/")
