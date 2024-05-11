@@ -17,7 +17,7 @@ public class Usuario {
 		@GeneratedValue(strategy = GenerationType.AUTO)
 		private Long id;
 		private String contraseña;
-		private String nombreCompleto;
+		private String username;
 		private LocalDate fechaAlta;
 		private Integer puntos;
 		private Integer numReservas;
@@ -25,7 +25,7 @@ public class Usuario {
 		
 		protected Usuario() {}
 		public Usuario(String nombre, String password,LocalDate fechaAlta) {
-			this.nombreCompleto= nombre;
+			this.username= nombre;
 			this.contraseña = password;
 			this.fechaAlta = fechaAlta;
 			this.numReservas = 0;
@@ -37,11 +37,11 @@ public class Usuario {
 		public void setContraseña(String contraseña) {
 			this.contraseña = contraseña;
 		}
-		public String getNombreCompleto() {
-			return nombreCompleto;
+		public String getUserName() {
+			return username;
 		}
 		public void setNombreCompleto(String nombreCompleto) {
-			this.nombreCompleto = nombreCompleto;
+			this.username = nombreCompleto;
 		}
 		public LocalDate getFechaAlta() {
 			return fechaAlta;
@@ -60,6 +60,9 @@ public class Usuario {
 		}
 		public void setNumReservas(Integer numReservas) {
 			this.numReservas = numReservas;
+		}
+		public Long getId() {
+			return id;
 		}
 		
 		

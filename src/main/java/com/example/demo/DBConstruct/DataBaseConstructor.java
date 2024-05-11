@@ -108,7 +108,7 @@ import jakarta.annotation.PostConstruct;
 		
 		//creamos usuarios
 		
-		Usuario us1 = new Usuario("Jorge Garcia","Amigo1",LocalDate.of(2020, 1, 1));
+		Usuario us1 = new Usuario("Alpaca1200","Amigo1",LocalDate.of(2020, 1, 1));
 		Usuario us2 = new Usuario("Carla Gonzalez","Carla1200",LocalDate.of(2020, 2, 2));
 		Usuario us3 = new Usuario("Stephan Uric","Croatia1999",LocalDate.of(2020, 3, 3));
 		
