@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<title>REVHOTEL</title>
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+    	<link rel="icon" type="image/x-icon" href="/Logo.png">
+    	<link rel="stylesheet" href="general.css">
+    	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    </head>
+    <body>
+			<div class="contenedorPrincipal">
+					<div class="card border-dark">
+						<div class="card-header">
+							<h1>Hotel {{nombre}}</h1>
+						</div>
+						<div class="card-body">
+							<div class="row">
+								<div class="col">
+									<!-- CAMBIAR ESTO -->
+									<a href="/editarestacion/{{id}}" class="mb-3 btn btn-dark" role="button">Editar</a>
+									<a href="/eliminarestacion/{{id}}" class="mb-3 btn btn-danger" role="button">Borrar hotel</a>
+								</div>
+								<div class="col">
+									<h5>Habitaciones del hotel</h5>
+									<table id="tablaHabitaciones" class="table table-hover">
+										<thead>
+											<tr>
+												<th>Id habitación</th>
+												<th>Número de habitación</th>
+												<th>Tipo de habitación</th>	
+											</tr>
+										</thead>
+											{{#habitaciones}}
+											<tr class="clickable" onclick="window.location='/bicicletas/{numeroSerie}'">
+												<td>{{habitacionId}}</td>
+												<td>{{numero}}</td>
+												<td>{{tipohabitacion}}</td>
+											{{/habitaciones}}
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+    	
+	</body>
+</html>

@@ -1,0 +1,30 @@
+.titulo {
+	padding: 2vw;
+	text-align: center;
+	font-size: 3.5vw;
+	font-weight: bold;
+}
+
+.contenedorPrincipal {
+	margin-left:7vw;
+	margin-right:7vw;
+	margin-bottom:7vw;
+}
+
+.carta {
+	width: 70%;
+	margin-top: 8vh;
+	margin-right: auto;
+	margin-left: auto;
+	
+}
+
+body{
+	min-height: 100vh;
+}
+
+footer {
+	position:sticky;
+	top:100%;
+	overflow: hidden
+}

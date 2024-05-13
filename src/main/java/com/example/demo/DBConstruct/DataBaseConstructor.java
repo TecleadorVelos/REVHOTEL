@@ -86,6 +86,7 @@ import jakarta.annotation.PostConstruct;
 		habitaciones1.addAll(Arrays.asList(hab1,hab2,hab3));
 		
 		h1.setHabitaciones(habitaciones1);
+		h1.setNumHabitaciones(3);
 		
 		hab4.setHotel(h2);
 		hab5.setHotel(h2);
@@ -93,6 +94,7 @@ import jakarta.annotation.PostConstruct;
 		
 		habitaciones2.addAll(Arrays.asList(hab4,hab5,hab6));
 		h2.setHabitaciones(habitaciones2);
+		h2.setNumHabitaciones(3);
 		
 		hab7.setHotel(h3);
 		hab8.setHotel(h3);
@@ -100,6 +102,7 @@ import jakarta.annotation.PostConstruct;
 		
 		habitaciones3.addAll(Arrays.asList(hab7,hab8,hab9));
 		h3.setHabitaciones(habitaciones3);
+		h3.setNumHabitaciones(3);
 	
 		hab1.anadirReserva(res1);
 		hab4.anadirReserva(res2);
@@ -111,6 +114,7 @@ import jakarta.annotation.PostConstruct;
 		Usuario us1 = new Usuario("Alpaca1200","Amigo1",LocalDate.of(2020, 1, 1));
 		Usuario us2 = new Usuario("Carla Gonzalez","Carla1200",LocalDate.of(2020, 2, 2));
 		Usuario us3 = new Usuario("Stephan Uric","Croatia1999",LocalDate.of(2020, 3, 3));
+		Usuario us4 = new Usuario("admin","0000",null);
 		
 		//introducimos en repositorios
 		
@@ -119,7 +123,7 @@ import jakarta.annotation.PostConstruct;
 		repositorioHotel.save(h3);
 		repositorioHabitacion.saveAll(Arrays.asList(hab1,hab2,hab3,hab4,hab5,hab6,hab7,hab8,hab9));
 		repositorioReservas.saveAll(Arrays.asList(res1,res2,res3));
-		repositorioUsuarios.saveAll(Arrays.asList(us1,us2,us3));
+		repositorioUsuarios.saveAll(Arrays.asList(us1,us2,us3,us4));
 		
 		
 	}

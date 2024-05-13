@@ -23,12 +23,14 @@ public class Hotel {
 		
 		@OneToMany(cascade=CascadeType.ALL, mappedBy="hotel")
 		private List<Habitacion> habitaciones = new ArrayList<Habitacion>(); //Podria mejorarse con un mapa, considerar en un futuro
+		private Integer numHabitaciones;
 		
 		protected Hotel() {}
 		
 		public Hotel (String name) {
 			this.nombre = name;
 			this.habitaciones = null;
+			this.numHabitaciones = 0;
 		}
 
 
@@ -51,8 +53,21 @@ public class Hotel {
 			this.habitaciones = habitaciones;
 		}
 		
+		public Long getHotelId() {
+			return hotelId;
+		}
+
+		public Integer getNumHabitaciones() {
+			return numHabitaciones;
+		}
+		
+		public void setNumHabitaciones(Integer numHabitaciones) {
+			this.numHabitaciones = numHabitaciones;
+		}
+
 		public void anadirHabitacion(Habitacion nuevaHabitacion) {
 			this.habitaciones.add(nuevaHabitacion);
+			this.numHabitaciones++;
 		}
 		
 		public boolean eliminarHabitacion (String numero) {
@@ -65,7 +80,10 @@ public class Hotel {
 				}
 			}
 			this.habitaciones.remove(hab);
-			if (operacion == true) return true;
+			if (operacion == true) {
+				this.numHabitaciones--;
+				return true;
+			}
 			else return false;
 		}
 }

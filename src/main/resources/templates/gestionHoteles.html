@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<title>REVHOTEL</title>
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+    	<link rel="icon" type="image/x-icon" href="/Logo.png">
+    	<link rel="stylesheet" href="general.css">
+    	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    </head>
+    <body>
+    	<h1 class="titulo">Gestión de Hoteles</h1>
+	<br>
+	<div class="carta">
+		<div class="row">
+			<div class="col">
+			    <a href="/" class="mb-3 btn btn-dark" role="button">Añadir un nuevo hotel</a>
+		    </div>
+		    <div class="col d-flex justify-content-end">
+			    <form id="eliminarForm" method="post" action="/" class="row g-2">
+			    	<div class="col-auto">
+			    		<input type="text" class="form-control" placeholder="Introduce identificador" name="id">
+			    	</div>
+			    	<div class="col-auto">
+			    		<input type="submit" value="Eliminar hotel" class="btn btn-danger">	
+			    	</div>
+			    </form>
+		    </div>
+	    </div>
+	    <table id="tablaHoteles" class="table table-hover">
+	   		<thead>
+		        <tr>
+		            <th>Identificador</th>
+		            <th>Nombre Hotel</th>
+		            <th>Num Habitaciones</th>
+		        </tr>
+	   		</thead>
+	   		<tbody>
+		        {{#hoteles}}
+		        <tr class="clickable"
+				   onclick="window.location='/hotelesyhabitaciones/{{hotelId}}'">
+		          	<td>{{hotelId}}</td>
+		            <td>{{nombre}}</td>
+		            <td>{{numHabitaciones}}</td>
+		        </tr>
+		        {{/hoteles}}
+	   		</tbody>
+	    </table>
+    </div>
+	</body>
+</html>
