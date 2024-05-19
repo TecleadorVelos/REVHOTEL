@@ -2,6 +2,7 @@
 <html>
     <head>
     	<title>REVHOTEL</title>
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
     	<link rel="icon" type="image/x-icon" href="/Logo.png">
     	<link rel="stylesheet" href="general.css">
     	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -9,52 +10,50 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     </head>
     <body>
-    	<div class="container">
-		    <div class="row">
-		        <div class="col-md-5">
-		            <div class="row">
-		                <div class="col-md-12"> 
-		                	<a id="accesoUsuarios" href="/loginUsuarios" "role="button" class="btn btn-warning btn-lg border" > Acceso Usuarios </a>
-		                </div>
-		            </div>
-		            <div class="row">
-		                <div class="col-md-12"> 
-		                	<a id="accesoUsuarios" href="/loginUsuarios" "role="button" class="btn btn-warning btn-lg border" > Acceso Usuarios </a>
-		                </div>
-		            </div>
-		           	<div class="row">
-		                <div class="col-md-12">
-		                	<a id="accesoUsuarios" href="/loginUsuarios" "role="button" class="btn btn-warning btn-lg border" > Acceso Usuarios </a>
-		                </div>
-		            </div>
-		            <div class="row">
-		                <div class="col-md-12"> 
-		                	<a id="accesoUsuarios" href="/loginUsuarios" "role="button" class="btn btn-warning btn-lg border" > Acceso Usuarios </a>
-		                </div>
-		            </div>
-		            <div class="row">
-		                <div class="col-md-12">
-		                	<a id="accesoUsuarios" href="/loginUsuarios" "role="button" class="btn btn-warning btn-lg border" > Acceso Usuarios </a>
-		                </div>
-		            </div>
-		            <div class="row">
-		                <div class="col-md-12">
-		                	<a id="accesoUsuarios" href="/loginUsuarios" "role="button" class="btn btn-warning btn-lg border" > Acceso Usuarios </a>
-		                </div>
-		            </div>
-		        </div>
-		        <div class="col-md-7">
-		            <div class="row">
-		                <div class="col-md-12">Tu numero de puntos es: 100 </div>
-		            </div>
-		            <div class="row">
-		                <div class="col-md-12">Reservas realizadas hasta la fecha en REVHOTEL : 15 </div>
-		            </div>
-		            
-		        </div>
+    	<h1 class="titulo">Gestión de Promociones</h1>
+	<br>
+	<div class="contenedorPrincipal">
+		<div class="row">
+			<div class="col d-flex justify-content-start">
+			    <form id="crearHotel" method="POST" action="/crearhotel" class="row g-2">
+			    	<div class="col-auto">
+			    		<input type="text" class="form-control" placeholder="Introduce nombre hotel" name="nombrehotel">
+			    	</div>
+			    	<div class="col-auto">
+			    		<input type="submit" value="Crear nuevo hotel" class="btn btn-dark">	
+			    	</div>
+			    </form>
 		    </div>
-		</div>
-
-    	 
+		    <div class="col d-flex justify-content-end">
+			    <form id="eliminarHotel" method="POST" action="/borrarhotel" class="row g-2">
+			    	<div class="col-auto">
+			    		<input type="text" class="form-control" placeholder="Introduce identificador" name="id">
+			    	</div>
+			    	<div class="col-auto">
+			    		<input type="submit" value="Eliminar hotel" class="btn btn-danger">	
+			    	</div>
+			    </form>
+		    </div>
+	    </div>
+	    <table id="tablaHoteles" class="table table-hover">
+	   		<thead>
+		        <tr>
+		            <th>Identificador</th>
+		            <th>Nombre Hotel</th>
+		            <th>Num Habitaciones</th>
+		        </tr>
+	   		</thead>
+	   		<tbody>
+		        {{#hoteles}}
+		        <tr class="clickable"
+				   onclick="window.location='/hotelesyhabitaciones/{{hotelId}}'">
+		          	<td>{{hotelId}}</td>
+		            <td>{{nombre}}</td>
+		            <td>{{numHabitaciones}}</td>
+		        </tr>
+		        {{/hoteles}}
+	   		</tbody>
+	    </table>
+    </div>
 	</body>
 </html>

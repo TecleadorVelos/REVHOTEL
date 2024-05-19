@@ -31,3 +31,9 @@ footer {
 p.no-line-break {
         display: inline;
     }
+h1.greeting-user{
+	padding: 2vw !important;
+	text-align: center !important;
+	font-size: 3.5vw !important;
+	font-weight: bold!important;
+}

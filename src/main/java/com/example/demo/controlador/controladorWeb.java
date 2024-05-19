@@ -15,6 +15,8 @@ import com.example.demo.classes.Habitacion;
 import com.example.demo.classes.HabitacionRepository;
 import com.example.demo.classes.Hotel;
 import com.example.demo.classes.HotelRepository;
+import com.example.demo.classes.Promocion;
+import com.example.demo.classes.PromocionesRepository;
 import com.example.demo.classes.ReservaRepository;
 import com.example.demo.classes.THabitacion;
 import com.example.demo.classes.Usuario;
@@ -38,6 +40,8 @@ public class controladorWeb {
 	@Autowired
 	private UsuarioRepository repositorioUsuarios;
 	
+	@Autowired
+	private PromocionesRepository repositorioPromociones;
 	
 	@GetMapping("/")
 	public String menuprincipal(Model model) {
@@ -103,7 +107,23 @@ public class controladorWeb {
 	//CONTROLADOR MENU USUARIOS
 	@GetMapping("/menuUsuarios/{id}")
 	public String menuUsuarios(Model model, @PathVariable Long id) {
-		return "menuUsuarios";
+		
+		Optional<Usuario> optional = repositorioUsuarios.findById(id);
+		if (optional.isPresent()) {
+			Usuario user = optional.get();
+			
+			model.addAttribute("nombre", user.getUserName());
+			model.addAttribute("numeroPuntos", user.getPuntos());
+			model.addAttribute("numeroReservas", user.getNumReservas());
+			model.addAttribute("Promociones", repositorioPromociones.findAll());
+			
+			return "menuUsuarios";
+		}
+		else {
+			model.addAttribute("message", "Error, Usuario no encontrado.");
+            return "error";
+		}
+		
 	}
 	
 	//CONTROLADOR MENU ADMIN
@@ -111,7 +131,14 @@ public class controladorWeb {
 	public String menuAdmin(Model model) {
 		return "menuAdmin";
 	}
-	
+	//CONTROLADOR DE PROMOCIONES
+	@GetMapping("/promociones")
+	public String promociones(Model model) {
+		List<Promocion> promociones = repositorioPromociones.findAll();
+		model.addAttribute("promociones", promociones);
+		
+		return "gestionPromociones";
+	}
 	//CONTROLADOR GESTION DE HOTELES
 	
 	@GetMapping("/hoteles")
