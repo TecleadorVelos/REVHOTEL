@@ -36,7 +36,7 @@ import jakarta.annotation.PostConstruct;
 	@Autowired
 	private UsuarioRepository repositorioUsuarios;
 	
-	@PostConstruct
+	//@PostConstruct
 	public void inicializarBBDD() {
 		//Creamos Hoteles
 		Hotel h1 = new Hotel("Coliseo");

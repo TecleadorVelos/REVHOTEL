@@ -28,3 +28,6 @@ footer {
 	top:100%;
 	overflow: hidden
 }
+p.no-line-break {
+        display: inline;
+    }

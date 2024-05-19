@@ -12,13 +12,20 @@
     <body>
     	<h1 class="titulo">Gestión de Hoteles</h1>
 	<br>
-	<div class="carta">
+	<div class="contenedorPrincipal">
 		<div class="row">
-			<div class="col">
-			    <a href="/" class="mb-3 btn btn-dark" role="button">Añadir un nuevo hotel</a>
+			<div class="col d-flex justify-content-start">
+			    <form id="crearHotel" method="POST" action="/crearhotel" class="row g-2">
+			    	<div class="col-auto">
+			    		<input type="text" class="form-control" placeholder="Introduce nombre hotel" name="nombrehotel">
+			    	</div>
+			    	<div class="col-auto">
+			    		<input type="submit" value="Crear nuevo hotel" class="btn btn-dark">	
+			    	</div>
+			    </form>
 		    </div>
 		    <div class="col d-flex justify-content-end">
-			    <form id="eliminarForm" method="post" action="/" class="row g-2">
+			    <form id="eliminarHotel" method="POST" action="/borrarhotel" class="row g-2">
 			    	<div class="col-auto">
 			    		<input type="text" class="form-control" placeholder="Introduce identificador" name="id">
 			    	</div>

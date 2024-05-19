@@ -22,6 +22,7 @@ public class Usuario {
 		private Integer puntos;
 		private Integer numReservas;
 		
+		//Asunto Reservas
 		
 		protected Usuario() {}
 		public Usuario(String nombre, String password,LocalDate fechaAlta) {

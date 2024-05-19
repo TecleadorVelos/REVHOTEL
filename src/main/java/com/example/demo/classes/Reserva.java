@@ -23,7 +23,8 @@ public class Reserva {
 	    
 	    @ManyToOne
 	    private Habitacion habitacion;
-
+	    
+	    //Probablemente haya que añadir el usuario que ha relaizado la reserva
 		public Reserva () {
 			this.fechaFin = null;
 	    	this.fechaInicio = null;
