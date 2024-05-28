@@ -1,5 +1,8 @@
 package com.example.demo.controlador;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -112,7 +115,7 @@ public class controladorWeb {
 		if (optional.isPresent()) {
 			Usuario user = optional.get();
 			
-			model.addAttribute("nombre", user.getUserName());
+			model.addAttribute("nombre", user.getUsername());
 			model.addAttribute("numeroPuntos", user.getPuntos());
 			model.addAttribute("numeroReservas", user.getNumReservas());
 			model.addAttribute("Promociones", repositorioPromociones.findAll());
@@ -138,6 +141,46 @@ public class controladorWeb {
 		model.addAttribute("promociones", promociones);
 		
 		return "gestionPromociones";
+	}
+	
+	@GetMapping("/formularioPromocion")
+	public String formularioPromocion(Model model) {
+		
+		return "formularioPromocion";
+	}
+	@PostMapping("/crearpromocion")
+	public String crearpromocion(Model model, @RequestParam Double oferta , @RequestParam String fechainicio, @RequestParam String fechafinal) {
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		try {
+		    LocalDate dateinicio = LocalDate.parse(fechainicio, formatter);
+		    LocalDate datefinal = LocalDate.parse(fechafinal, formatter);
+		    
+		    Promocion nuevapromo = new Promocion (oferta,dateinicio,datefinal);
+		    repositorioPromociones.save(nuevapromo);
+		
+		    return "redirect:/promociones";
+		    
+		} catch (DateTimeParseException e) {
+			model.addAttribute("message", "Error, en la conversión de fechas.");
+            return "error";
+		}
+
+	}
+	@GetMapping("/borrarpromocion/{id}")
+	public String borrarpromocion(Model model, @PathVariable Long id) {
+		
+		Optional<Promocion> optional = repositorioPromociones.findById(id);
+		
+		if (optional.isPresent()) {
+			repositorioPromociones.deleteById(id);
+			return "redirect:/promociones";
+		}
+		else {
+			model.addAttribute("message", "Se ha producido un error, promoción no encontrada.");
+			return "error";
+		}
+		
 	}
 	//CONTROLADOR GESTION DE HOTELES
 	

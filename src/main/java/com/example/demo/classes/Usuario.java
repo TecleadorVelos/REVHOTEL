@@ -1,13 +1,16 @@
 package com.example.demo.classes;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Usuario {
@@ -22,7 +25,8 @@ public class Usuario {
 		private Integer puntos;
 		private Integer numReservas;
 		
-		//Asunto Reservas
+		@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+	    private List<Reserva> reservas;
 		
 		protected Usuario() {}
 		public Usuario(String nombre, String password,LocalDate fechaAlta) {
@@ -31,6 +35,7 @@ public class Usuario {
 			this.fechaAlta = fechaAlta;
 			this.numReservas = 0;
 			this.puntos = 0;
+			
 		}
 		public String getContraseña() {
 			return contraseña;
@@ -38,11 +43,12 @@ public class Usuario {
 		public void setContraseña(String contraseña) {
 			this.contraseña = contraseña;
 		}
-		public String getUserName() {
+		
+		public String getUsername() {
 			return username;
 		}
-		public void setNombreCompleto(String nombreCompleto) {
-			this.username = nombreCompleto;
+		public void setUsername(String username) {
+			this.username = username;
 		}
 		public LocalDate getFechaAlta() {
 			return fechaAlta;
@@ -66,6 +72,14 @@ public class Usuario {
 			return id;
 		}
 		
-		
+		public void setId(Long id) {
+			this.id = id;
+		}
+		public List<Reserva> getReservas() {
+			return reservas;
+		}
+		public void setReservas(List<Reserva> reservas) {
+			this.reservas = reservas;
+		}
 		
 }
