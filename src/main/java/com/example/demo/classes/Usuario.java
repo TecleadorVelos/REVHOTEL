@@ -28,6 +28,9 @@ public class Usuario {
 		@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
 	    private List<Reserva> reservas;
 		
+		@OneToMany
+		private List<Reserva> historialReservas;
+		
 		protected Usuario() {}
 		public Usuario(String nombre, String password,LocalDate fechaAlta) {
 			this.username= nombre;
@@ -80,6 +83,12 @@ public class Usuario {
 		}
 		public void setReservas(List<Reserva> reservas) {
 			this.reservas = reservas;
+		}
+		public List<Reserva> getHistorialReservas() {
+			return historialReservas;
+		}
+		public void setHistorialReservas(List<Reserva> historialReservas) {
+			this.historialReservas = historialReservas;
 		}
 		
 }

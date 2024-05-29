@@ -37,3 +37,10 @@ h1.greeting-user{
 	font-size: 3.5vw !important;
 	font-weight: bold!important;
 }
+
+.container .titulo {
+	padding: 2vw;
+	text-align: center;
+	font-size: 3.5vw;
+	font-weight: bold;
+}

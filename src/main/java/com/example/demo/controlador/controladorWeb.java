@@ -20,6 +20,7 @@ import com.example.demo.classes.Hotel;
 import com.example.demo.classes.HotelRepository;
 import com.example.demo.classes.Promocion;
 import com.example.demo.classes.PromocionesRepository;
+import com.example.demo.classes.Reserva;
 import com.example.demo.classes.ReservaRepository;
 import com.example.demo.classes.THabitacion;
 import com.example.demo.classes.Usuario;
@@ -119,6 +120,7 @@ public class controladorWeb {
 			model.addAttribute("numeroPuntos", user.getPuntos());
 			model.addAttribute("numeroReservas", user.getNumReservas());
 			model.addAttribute("Promociones", repositorioPromociones.findAll());
+			model.addAttribute("id", id);
 			
 			return "menuUsuarios";
 		}
@@ -126,6 +128,76 @@ public class controladorWeb {
 			model.addAttribute("message", "Error, Usuario no encontrado.");
             return "error";
 		}
+		
+	}
+	//CONTROLADOR DE LAS RESERVAS DE LOS USUARIOS
+	
+	@GetMapping("/reservas/{id}")
+	public String reservas(Model model, @PathVariable Long id) {
+		Optional<Usuario> optionaluser = repositorioUsuarios.findById(id);
+		if (optionaluser.isEmpty()) {
+			model.addAttribute("message", "Error, Usuario no encontrado.");
+            return "error";
+		}
+		
+		Optional<List<Reserva>> optional = repositorioReservas.findByUsuario(optionaluser.get());
+		
+		if (optional.isEmpty()) {
+			model.addAttribute("message", "Error, reservas no encontradas.");
+            return "error";
+		}
+		
+		model.addAttribute("reservas", optional.get());
+		model.addAttribute("numReservas", optional.get().size());
+		model.addAttribute("nombre", optionaluser.get().getUsername());
+		model.addAttribute("idUsuario", optionaluser.get().getId());
+		return "menuReservas";
+	}
+	@GetMapping("/nuevareserva/{id}")
+	public String crearreserva(Model model,@PathVariable Long id) {
+		
+		List<Hotel> hoteles = repositorioHotel.findAll();
+		model.addAttribute("id", id);
+		model.addAttribute("hoteles", hoteles);
+		return "formularioNuevaReserva";
+		
+	}
+	@PostMapping("/nuevareserva/{id}")
+	public String crearNuevaReserva(Model model,@PathVariable Long id) {
+		
+		model.addAttribute("id", id);
+		
+		return "formularioNuevaReserva";
+		
+	}
+	@GetMapping("/borrarreserva/{idUsuario}/{id}")
+	public String borrarReservas(Model model,@PathVariable Long idUsuario, @PathVariable Long id) {
+		
+		Optional<Reserva> optional = repositorioReservas.findById(id);
+		
+		if (optional.isPresent()) {
+			repositorioReservas.deleteById(id);
+			
+			return "redirect:/reservas/" + idUsuario;
+		}
+		else {
+			model.addAttribute("message", "Error, reserva no encontrada.");
+            return "error";
+		}
+	}
+	@GetMapping("/historialreservas/{id}")
+	public String historialreservas(Model model, @PathVariable Long id) {
+		
+		Optional<Usuario> optional = repositorioUsuarios.findById(id);
+		
+		if (optional.isEmpty()) {
+			model.addAttribute("message", "Error, Usuario no encontrado.");
+            return "error";
+		}
+		Usuario user= optional.get();
+		model.addAttribute("usuario", user);
+		model.addAttribute("numReservas", user.getNumReservas());
+		return "historialReservas";
 		
 	}
 	

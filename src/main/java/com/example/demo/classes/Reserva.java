@@ -24,6 +24,9 @@ public class Reserva {
 	    private LocalDate fechaFin;
 	    
 	    @ManyToOne
+	    private Hotel hotel;
+	    
+	    @ManyToOne
 	    private Habitacion habitacion;
 	    
 	    @ManyToOne
@@ -77,6 +80,14 @@ public class Reserva {
 
 		public void setUsuario(Usuario usuario) {
 			this.usuario = usuario;
+		}
+
+		public Hotel getHotel() {
+			return hotel;
+		}
+
+		public void setHotel(Hotel hotel) {
+			this.hotel = hotel;
 		}					
 	    
 	    
