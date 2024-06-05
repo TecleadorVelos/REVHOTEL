@@ -3,6 +3,7 @@ package com.example.demo.controlador;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,7 @@ import com.example.demo.classes.ReservaRepository;
 import com.example.demo.classes.THabitacion;
 import com.example.demo.classes.Usuario;
 import com.example.demo.classes.UsuarioRepository;
+import com.example.demo.services.ReservaService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -151,6 +153,7 @@ public class controladorWeb {
 		model.addAttribute("numReservas", optional.get().size());
 		model.addAttribute("nombre", optionaluser.get().getUsername());
 		model.addAttribute("idUsuario", optionaluser.get().getId());
+		
 		return "menuReservas";
 	}
 	@GetMapping("/nuevareserva/{id}")
@@ -163,13 +166,118 @@ public class controladorWeb {
 		
 	}
 	@PostMapping("/nuevareserva/{id}")
-	public String crearNuevaReserva(Model model,@PathVariable Long id) {
+	public String crearNuevaReserva(Model model,@PathVariable Long id, @RequestParam String selectorHotel, @RequestParam String tipoHabitacion, 
+			@RequestParam String fechaEntrada, @RequestParam String fechaSalida) {
 		
-		model.addAttribute("id", id);
 		
-		return "formularioNuevaReserva";
+		/* *ALGORITMO*
+		 * 1º- Comprobamos que el formato de las fechas sea correcto.
+		 * 2º- Obtenemos el THabitacion.
+		 * 3º- Buscamos el hotel.
+		 * 4º- Obtenemos todas las habitaciones del hotel.
+		 * 5º- Nos quedamos con las habitaciones del tipo deseado
+		 * 6º- Comprobamos si podemos realizar la reserva en base a las fechas introducidas.
+		 * 6.1º- Cogemos una habitacion y sacamos todas sus reservas.
+		 * 6.2º- Si no se puede reservar en la habitacion pq ya hay una reserva en esas fechas se salta a la siguiente hab
+		 * 6.3º- Al acabar las reservas de la habitacion, si reservarokhab esta a true se realiza la reserva 
+		 * 6.4º - sino se pasa a la siguiente habitacion.*/
 		
+		
+		//Comprobamos que el formato de las fechas sea el correcto
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+	    LocalDate fechaInicioReserva2 = LocalDate.parse(fechaEntrada, formatter);
+
+	    LocalDate fechaFinReserva2 = LocalDate.parse(fechaSalida, formatter);
+		
+		//Convertimos el tipohabitacion a THabitacion
+		THabitacion tipo = null;
+		switch(tipoHabitacion){
+		case "Normal": tipo = THabitacion.NORMAL;
+			break;
+		case "Doble": tipo = THabitacion.DOBLE;
+			break;
+		case "Suite": tipo = THabitacion.SUITE;
+			break;
+		}
+		// Buscamos el hotel
+		Optional<Hotel> optionalhotel = repositorioHotel.findByNombre(selectorHotel);
+		if(optionalhotel.isEmpty()){
+			model.addAttribute("message", "Error, hotel no encontrado.");
+            return "errorFormularioNuevaReserva";
+		}else {
+			//Buscamos las habitaciones
+		Optional<List<Habitacion>> optionalHabitaciones = repositorioHabitacion.findByHotel(optionalhotel.get());
+			if (optionalHabitaciones.isEmpty()) {
+				model.addAttribute("message", "Error, habitaciones no encontradas.");
+	            return "errorFormularioNuevaReserva";
+			}else {
+				boolean haytipo = false;
+				List<Habitacion> listaHabitaciones = optionalHabitaciones.get();
+				ArrayList<Habitacion> habitacionestipo = new ArrayList<>();
+				for (Habitacion hab: listaHabitaciones) {
+					if (hab.getTipohabitacion().equals(tipo)) {
+						habitacionestipo.add(hab);
+						haytipo = true;
+					}
+				}
+				//Si llegamos aqui hay que comprobar el boolean
+				if (haytipo != true) { // no hay habitaciones
+					model.addAttribute("message", "Error, no existen habitaciones en este hotel del tipo deseado.");
+		            return "errorFormularioNuevaReserva";
+				}
+				else {
+					// Existen habitaciones y hay que comprobar las fechas
+					boolean reservarokhotel = false;
+					for (Habitacion habi: habitacionestipo) { //iteramos las posibles habitaciones
+						List<Reserva> reservashab = habi.getReservas();
+						boolean reservarokhab = true; //este boolean me marca si puedo reservar en una habitacion tras haber comprobado todas las reservas de la misma
+						for (Reserva posiblereserva: reservashab) { //iteramos las reservas de la habitacion
+							ReservaService servicioReservas = new ReservaService();
+							if (servicioReservas.reservaComparator(posiblereserva, fechaInicioReserva2, fechaFinReserva2) == false) {
+								//no se puede , ya que hay una reserva
+								reservarokhab = false;
+								
+								break;	
+							}	
+						}
+						if (reservarokhab == true) {
+							// realizamos la reserva
+							/* 1º - Creamos la Reserva
+							 * 2º- La añadimos a la Habitacion
+							 * 3º - Guardamos en el repositorio de habitaciones
+							 * 4º - Guardamos en el repositorio de reservas
+							 */
+							reservarokhotel = true;
+							//1º PASO
+							Reserva nuevareserva = new Reserva(fechaInicioReserva2,fechaFinReserva2, habi );
+							// Añadimos a la reserva el hotel y el usuario
+							Hotel hotel = optionalhotel.get();
+							Usuario user = repositorioUsuarios.findById(id).get(); //Quizas habría que hacer un tratamiento de excepcion aqui en el caso de que no haya usuario
+							nuevareserva.setUsuario(user);
+							nuevareserva.setHotel(hotel);
+							//2º PASO
+							habi.anadirReserva(nuevareserva);
+							//3º PASO
+							repositorioHabitacion.save(habi);
+							//4º PASO
+							repositorioReservas.save(nuevareserva);
+							break;
+						}
+						
+					} // se acaba el primer for 
+					if (reservarokhotel == true) {
+						return "redirect:/reservas/{id}";
+					}else {
+						model.addAttribute("message", "Error, no es posible reservar este tipo de habitación para este hotel en las fechas seleccionadas.");
+			            return "errorFormularioNuevaReserva";
+					}	
+				}
+			}
+		}
 	}
+	
 	@GetMapping("/borrarreserva/{idUsuario}/{id}")
 	public String borrarReservas(Model model,@PathVariable Long idUsuario, @PathVariable Long id) {
 		
@@ -184,6 +292,126 @@ public class controladorWeb {
 			model.addAttribute("message", "Error, reserva no encontrada.");
             return "error";
 		}
+	}
+	@GetMapping("/editarreserva/{idUsuario}/{id}")
+	public String editarReserva(Model model,@PathVariable Long idUsuario, @PathVariable Long id) {
+			
+		model.addAttribute("idReserva", id);
+		model.addAttribute("idUsuario", idUsuario);
+		
+		return "formularioEditarReserva";
+		
+		
+	}
+	@PostMapping("/editarreserva/{idUsuario}/{id}")
+	public String editarReservaPOST(Model model, @PathVariable Long idUsuario, @PathVariable Long id, @RequestParam String tipoHabitacion, @RequestParam String fechaEntrada,
+			@RequestParam String fechaSalida) {
+			
+		//Cogemos la reserva ya existente
+		
+		Optional<Reserva> optionalreserva = repositorioReservas.findById(id);
+		if (optionalreserva.isEmpty()) {
+			
+			model.addAttribute("message", "Error, reserva la reserva no existe.");
+            return "error";
+		}
+		Reserva reserva = optionalreserva.get();
+		
+		//Comprobamos que el formato de las fechas sea el correcto
+		
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+				
+			    LocalDate fechaInicioReserva2 = LocalDate.parse(fechaEntrada, formatter);
+
+			    LocalDate fechaFinReserva2 = LocalDate.parse(fechaSalida, formatter);
+				
+				//Convertimos el tipohabitacion a THabitacion
+				THabitacion tipo = null;
+				switch(tipoHabitacion){
+				case "Normal": tipo = THabitacion.NORMAL;
+					break;
+				case "Doble": tipo = THabitacion.DOBLE;
+					break;
+				case "Suite": tipo = THabitacion.SUITE;
+					break;
+				}
+				
+				// Buscamos el hotel, al modificar la reserva no se puede modificar el hotel
+				Hotel hotel = reserva.getHotel();
+	
+				//Buscamos las habitaciones
+				Optional<List<Habitacion>> optionalHabitaciones = repositorioHabitacion.findByHotel(hotel);
+				if (optionalHabitaciones.isEmpty()) {
+					model.addAttribute("message", "Error, habitaciones no encontradas.");
+		            return "errorFormularioNuevaReserva";
+				}else {
+					boolean haytipo = false;
+					List<Habitacion> listaHabitaciones = optionalHabitaciones.get();
+					ArrayList<Habitacion> habitacionestipo = new ArrayList<>();
+					for (Habitacion hab: listaHabitaciones) {
+						if (hab.getTipohabitacion().equals(tipo)) {
+							habitacionestipo.add(hab);
+							haytipo = true;
+						}
+					}
+					//Si llegamos aqui hay que comprobar el boolean
+					if (haytipo != true) { // no hay habitaciones
+						model.addAttribute("message", "Error, no existen habitaciones en este hotel del tipo deseado.");
+			            return "errorFormularioNuevaReserva";
+					}
+					else {
+						// Existen habitaciones y hay que comprobar las fechas
+						boolean reservarokhotel = false;
+						for (Habitacion habi: habitacionestipo) { //iteramos las posibles habitaciones
+							List<Reserva> reservashab = habi.getReservas();
+							boolean reservarokhab = true; //este boolean me marca si puedo reservar en una habitacion tras haber comprobado todas las reservas de la misma
+							for (Reserva posiblereserva: reservashab) { //iteramos las reservas de la habitacion
+								ReservaService servicioReservas = new ReservaService();
+								if (servicioReservas.reservaComparator(posiblereserva, fechaInicioReserva2, fechaFinReserva2) == false) {
+									//no se puede , ya que hay una reserva
+									reservarokhab = false;
+									
+									break;	
+								}	
+							}
+							if (reservarokhab == true) {
+								// realizamos la reserva
+								/* 1º - Creamos la Reserva
+								 * 2º- La añadimos a la Habitacion
+								 * 3º - Guardamos en el repositorio de habitaciones
+								 * 4º - Guardamos en el repositorio de reservas
+								 */
+								reservarokhotel = true;
+								//1º PASO
+								reserva.setHabitacion(habi);
+								reserva.setFechaInicio(fechaInicioReserva2);
+								reserva.setFechaFin(fechaFinReserva2);
+								
+								// Añadimos a la reserva el hotel y el usuario
+								
+								reserva.setHotel(hotel);
+								Usuario user = repositorioUsuarios.findById(idUsuario).get(); //Quizas habría que hacer un tratamiento de excepcion aqui en el caso de que no haya usuario
+								reserva.setUsuario(user);
+								
+								//2º PASO
+								habi.eliminarReserva(id); //eliminamos la reserva antigua
+								habi.anadirReserva(reserva); // añadimos la nueva
+								//3º PASO
+								repositorioHabitacion.save(habi);
+								//4º PASO
+								repositorioReservas.save(reserva);
+								break;
+							}
+							
+						} // se acaba el primer for 
+						if (reservarokhotel == true) {
+							return "redirect:/reservas/{id}";
+						}else {
+							model.addAttribute("message", "Error, no es posible reservar este tipo de habitación para este hotel en las fechas seleccionadas.");
+				            return "errorFormularioNuevaReserva";
+						}	
+					}
+				}			
 	}
 	@GetMapping("/historialreservas/{id}")
 	public String historialreservas(Model model, @PathVariable Long id) {

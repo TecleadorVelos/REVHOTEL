@@ -13,20 +13,12 @@
 		<div class="d-flex justify-content-center">
 		        	<div class="card border-dark mt-5" style="width: 79%;">
 		        		<div class="card-header">
-							<h1>Nueva reserva</h1>
+							<h1>Editar Reserva</h1>
 		        		</div>
 		        		<div class="card-body">
 		        				<div class="row">	
-								        <p>Introduce los datos de la nueva reserva: </p>
-								        <form id="formulario_reserva" action="/nuevareserva/{{id}}" method="POST">
-								        	
-								        	<label for="serie">Seleccione hotel: </label>
-											<select name="selectorHotel">
-											{{#hoteles}}
-											  <option value="{{nombre}}" selected>{{nombre}}</option>
-											{{/hoteles}}
-											</select>
-											
+								        <p>Es posible modificar tanto el tipo de habitación como la fecha de entrada y de salida: </p>
+								        <form id="formulario_editar_reserva" action="/editarreserva/{{idUsuario}}}/{{idReserva}}" method="POST">
 								            <br>
 								            <br>
 								            <label for"capacidad">Tipo de habitación: </label>
@@ -37,11 +29,11 @@
 											</select>      
 								            <br>
 								            <br>
-								            <span>Fecha de entrada (formato: dd/mm/yyyy):</span>
+								            <span>Nueva Fecha de entrada (formato: dd/mm/yyyy):</span>
 								            <input type="text" name="fechaEntrada" placeholder="Introduce una fecha de entrada" class="form-control-sm">
 								            <br>
 								            <br>
-								            <span>Fecha de salida (formato: dd/mm/yyyy):</span>						    
+								            <span>Nueva Fecha de salida (formato: dd/mm/yyyy):</span>						    
 								            <input type="text" name="fechaSalida" placeholder="Introduce una fecha de salida" class="form-control-sm">
 								            <br>
 								            <br>
