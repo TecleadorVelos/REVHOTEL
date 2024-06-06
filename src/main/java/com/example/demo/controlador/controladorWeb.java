@@ -56,12 +56,12 @@ public class controladorWeb {
 	
 	//CONTROLADOR LOGIN USUARIOS
 	
-	@GetMapping("/loginUsuarios")
+	@GetMapping("/loginUsuarios") //Muestra el login usuarios
 	public String loginUsuarios(Model model) {
 		return "loginUsuarios";
 	
 	}
-	@PostMapping("/loginUsuarios")
+	@PostMapping("/loginUsuarios") //Realiza la acción POST para iniciar sesión
     public String procesarLogin(Model model, @RequestParam String nombreUsuario, @RequestParam String contrasena) {
         
 		Optional<Usuario> optional = repositorioUsuarios.findByUsername(nombreUsuario);
@@ -85,11 +85,11 @@ public class controladorWeb {
 	
 	//CONTROLADOR LOGIN ADMIN
 	
-	@GetMapping("/loginAdmin")
+	@GetMapping("/loginAdmin") //Muestra la pantalla de inicio de sesion del admin
 	public String loginAdministrador(Model model) {
 		return "loginAdmin";
 	}
-	@PostMapping("/loginAdmin")
+	@PostMapping("/loginAdmin") //Realiza la acción POST del Admin
 	public String procesarLoginAdministrador(Model model, @RequestParam String nombreAdmin, @RequestParam String contrasena) {
 		
 		Optional<Usuario> optional = repositorioUsuarios.findByUsername(nombreAdmin);
@@ -111,7 +111,7 @@ public class controladorWeb {
 	}
 	
 	//CONTROLADOR MENU USUARIOS
-	@GetMapping("/menuUsuarios/{id}")
+	@GetMapping("/menuUsuarios/{id}") //Muestra el menú que ve un usuario
 	public String menuUsuarios(Model model, @PathVariable Long id) {
 		
 		Optional<Usuario> optional = repositorioUsuarios.findById(id);
@@ -134,7 +134,7 @@ public class controladorWeb {
 	}
 	//CONTROLADOR DE LAS RESERVAS DE LOS USUARIOS
 	
-	@GetMapping("/reservas/{id}")
+	@GetMapping("/reservas/{id}") //Muestra la pestaña de reservas de un usuario
 	public String reservas(Model model, @PathVariable Long id) {
 		Optional<Usuario> optionaluser = repositorioUsuarios.findById(id);
 		if (optionaluser.isEmpty()) {
@@ -156,7 +156,7 @@ public class controladorWeb {
 		
 		return "menuReservas";
 	}
-	@GetMapping("/nuevareserva/{id}")
+	@GetMapping("/nuevareserva/{id}") //Muestra el formulario para realizar una nueva reserva
 	public String crearreserva(Model model,@PathVariable Long id) {
 		
 		List<Hotel> hoteles = repositorioHotel.findAll();
@@ -165,7 +165,7 @@ public class controladorWeb {
 		return "formularioNuevaReserva";
 		
 	}
-	@PostMapping("/nuevareserva/{id}")
+	@PostMapping("/nuevareserva/{id}") //POST para realizar una nueva reserva
 	public String crearNuevaReserva(Model model,@PathVariable Long id, @RequestParam String selectorHotel, @RequestParam String tipoHabitacion, 
 			@RequestParam String fechaEntrada, @RequestParam String fechaSalida) {
 		
@@ -257,12 +257,15 @@ public class controladorWeb {
 							Usuario user = repositorioUsuarios.findById(id).get(); //Quizas habría que hacer un tratamiento de excepcion aqui en el caso de que no haya usuario
 							nuevareserva.setUsuario(user);
 							nuevareserva.setHotel(hotel);
+							user.anadirPuntos(tipo);
+							user.setNumReservas(user.getNumReservas() + 1);
 							//2º PASO
 							habi.anadirReserva(nuevareserva);
 							//3º PASO
 							repositorioHabitacion.save(habi);
 							//4º PASO
 							repositorioReservas.save(nuevareserva);
+							repositorioUsuarios.save(user);
 							break;
 						}
 						
@@ -278,14 +281,22 @@ public class controladorWeb {
 		}
 	}
 	
-	@GetMapping("/borrarreserva/{idUsuario}/{id}")
+	@GetMapping("/borrarreserva/{idUsuario}/{id}") // Acción de Borrar reserva
 	public String borrarReservas(Model model,@PathVariable Long idUsuario, @PathVariable Long id) {
 		
 		Optional<Reserva> optional = repositorioReservas.findById(id);
 		
 		if (optional.isPresent()) {
+			Reserva res = optional.get();
 			repositorioReservas.deleteById(id);
-			
+			THabitacion tipo = res.getHabitacion().getTipohabitacion();
+			Optional<Usuario> user = repositorioUsuarios.findById(idUsuario);
+			if (user.isPresent()) {
+				Usuario usuario =user.get();
+				usuario.borrarPuntos(tipo);
+				usuario.setNumReservas(usuario.getNumReservas() - 1);
+				repositorioUsuarios.save(usuario);
+			}
 			return "redirect:/reservas/" + idUsuario;
 		}
 		else {
@@ -293,7 +304,7 @@ public class controladorWeb {
             return "error";
 		}
 	}
-	@GetMapping("/editarreserva/{idUsuario}/{id}")
+	@GetMapping("/editarreserva/{idUsuario}/{id}") // nos lleva al formulario de editar reserva
 	public String editarReserva(Model model,@PathVariable Long idUsuario, @PathVariable Long id) {
 			
 		model.addAttribute("idReserva", id);
@@ -303,17 +314,17 @@ public class controladorWeb {
 		
 		
 	}
-	@PostMapping("/editarreserva/{idUsuario}/{id}")
-	public String editarReservaPOST(Model model, @PathVariable Long idUsuario, @PathVariable Long id, @RequestParam String tipoHabitacion, @RequestParam String fechaEntrada,
+	@PostMapping("/editarreserva/{idUsuario}/{idReserva}") //POST de editar reserva
+	public String editarReservaPOST(Model model, @PathVariable Long idUsuario, @PathVariable Long idReserva, @RequestParam String tipoHabitacion, @RequestParam String fechaEntrada,
 			@RequestParam String fechaSalida) {
 			
 		//Cogemos la reserva ya existente
 		
-		Optional<Reserva> optionalreserva = repositorioReservas.findById(id);
+		Optional<Reserva> optionalreserva = repositorioReservas.findById(idReserva);
 		if (optionalreserva.isEmpty()) {
 			
 			model.addAttribute("message", "Error, reserva la reserva no existe.");
-            return "error";
+            return "errorFormularioEditarReserva";
 		}
 		Reserva reserva = optionalreserva.get();
 		
@@ -343,7 +354,7 @@ public class controladorWeb {
 				Optional<List<Habitacion>> optionalHabitaciones = repositorioHabitacion.findByHotel(hotel);
 				if (optionalHabitaciones.isEmpty()) {
 					model.addAttribute("message", "Error, habitaciones no encontradas.");
-		            return "errorFormularioNuevaReserva";
+		            return "errorFormularioEditarReserva";
 				}else {
 					boolean haytipo = false;
 					List<Habitacion> listaHabitaciones = optionalHabitaciones.get();
@@ -357,7 +368,7 @@ public class controladorWeb {
 					//Si llegamos aqui hay que comprobar el boolean
 					if (haytipo != true) { // no hay habitaciones
 						model.addAttribute("message", "Error, no existen habitaciones en este hotel del tipo deseado.");
-			            return "errorFormularioNuevaReserva";
+			            return "errorFormularioEditarReserva";
 					}
 					else {
 						// Existen habitaciones y hay que comprobar las fechas
@@ -392,28 +403,29 @@ public class controladorWeb {
 								reserva.setHotel(hotel);
 								Usuario user = repositorioUsuarios.findById(idUsuario).get(); //Quizas habría que hacer un tratamiento de excepcion aqui en el caso de que no haya usuario
 								reserva.setUsuario(user);
-								
+								user.cambiarPuntos(reserva.getHabitacion().getTipohabitacion(), tipo);
 								//2º PASO
-								habi.eliminarReserva(id); //eliminamos la reserva antigua
+								habi.eliminarReserva(idReserva); //eliminamos la reserva antigua
 								habi.anadirReserva(reserva); // añadimos la nueva
 								//3º PASO
 								repositorioHabitacion.save(habi);
 								//4º PASO
 								repositorioReservas.save(reserva);
+								repositorioUsuarios.save(user);
 								break;
 							}
 							
 						} // se acaba el primer for 
 						if (reservarokhotel == true) {
-							return "redirect:/reservas/{id}";
+							return "redirect:/reservas/" + idUsuario;
 						}else {
 							model.addAttribute("message", "Error, no es posible reservar este tipo de habitación para este hotel en las fechas seleccionadas.");
-				            return "errorFormularioNuevaReserva";
+				            return "errorFormularioEditarReserva";
 						}	
 					}
 				}			
 	}
-	@GetMapping("/historialreservas/{id}")
+	@GetMapping("/historialreservas/{id}") //muestra el historial de reservas realizadas y acabadas.
 	public String historialreservas(Model model, @PathVariable Long id) {
 		
 		Optional<Usuario> optional = repositorioUsuarios.findById(id);
@@ -430,12 +442,12 @@ public class controladorWeb {
 	}
 	
 	//CONTROLADOR MENU ADMIN
-	@GetMapping("/menuAdmin")
+	@GetMapping("/menuAdmin") // Devuelve la vista de menu de admin
 	public String menuAdmin(Model model) {
 		return "menuAdmin";
 	}
 	//CONTROLADOR DE PROMOCIONES
-	@GetMapping("/promociones")
+	@GetMapping("/promociones") // devuelve la vista del menu promociones
 	public String promociones(Model model) {
 		List<Promocion> promociones = repositorioPromociones.findAll();
 		model.addAttribute("promociones", promociones);
@@ -443,12 +455,12 @@ public class controladorWeb {
 		return "gestionPromociones";
 	}
 	
-	@GetMapping("/formularioPromocion")
+	@GetMapping("/formularioPromocion") //Vista formulario promocion
 	public String formularioPromocion(Model model) {
 		
 		return "formularioPromocion";
 	}
-	@PostMapping("/crearpromocion")
+	@PostMapping("/crearpromocion") //POST para crear promocion
 	public String crearpromocion(Model model, @RequestParam Double oferta , @RequestParam String fechainicio, @RequestParam String fechafinal) {
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -467,7 +479,7 @@ public class controladorWeb {
 		}
 
 	}
-	@GetMapping("/borrarpromocion/{id}")
+	@GetMapping("/borrarpromocion/{id}") //Delete de borrar promocion
 	public String borrarpromocion(Model model, @PathVariable Long id) {
 		
 		Optional<Promocion> optional = repositorioPromociones.findById(id);
@@ -484,14 +496,14 @@ public class controladorWeb {
 	}
 	//CONTROLADOR GESTION DE HOTELES
 	
-	@GetMapping("/hoteles")
+	@GetMapping("/hoteles") //Vista de los hoteles 
 	public String hotelesyHabitaciones(Model model) {
 		List<Hotel> hoteles = repositorioHotel.findAll();
 		model.addAttribute("hoteles", hoteles);
 		
 		return "gestionHoteles";
 	}
-	@PostMapping("/borrarhotel")
+	@PostMapping("/borrarhotel") //Borrar hoteles
 	public String borrarhotel(Model model, @RequestParam Long id) {
 		
 		Optional<Hotel> optional = repositorioHotel.findById(id);
@@ -506,7 +518,7 @@ public class controladorWeb {
 		
 	}
 	
-	@PostMapping("/crearhotel")
+	@PostMapping("/crearhotel") //POST Crear hoteles
 	public String crearhotel(Model model, @RequestParam String nombrehotel) {
 		Hotel nuevoHotel = new Hotel (nombrehotel);
 		repositorioHotel.save(nuevoHotel);
@@ -514,7 +526,7 @@ public class controladorWeb {
 		return "redirect:/hoteles";
 	}
 	//CONTROLADOR GESTION DE HABITACIONES
-	@GetMapping("/hotelesyhabitaciones/{id}")
+	@GetMapping("/hotelesyhabitaciones/{id}") //Vista que muestra las habitaciones de un hotel
 	public String hotelesyHabitaciones(Model model, @PathVariable Long id) {
 		
 		Optional<Hotel> optional = repositorioHotel.findById(id);
@@ -534,13 +546,13 @@ public class controladorWeb {
 		}
 		
 	}
-	@GetMapping("/anadirhabitacion/{id}")
+	@GetMapping("/anadirhabitacion/{id}") //Formulario de añadir habitacion
 	public String anadirhabitacion(Model model, @PathVariable Long id) {
 		model.addAttribute("identificadorHotel", id);
 		return "formularioNuevaHabitacion" ;
 	}
 	
-	@PostMapping("/anadirhabitacion/{id}")
+	@PostMapping("/anadirhabitacion/{id}") //Post para añadir habitacion
 	public String anadirhabitacion(Model model, @PathVariable Long id, @RequestParam String numeroHabitacion, @RequestParam String tipoHabitacion) {
 		
 		Optional<Hotel> optional = repositorioHotel.findById(id);
@@ -570,7 +582,7 @@ public class controladorWeb {
 		}
 		
 	}
-	@GetMapping("/borrarhabitacion/{id}/{habitacionId}")
+	@GetMapping("/borrarhabitacion/{id}/{habitacionId}") //Borrar habitacion
 	public String borrarhabitacion(Model model, @PathVariable Long id, @PathVariable Long habitacionId) {
 		
 		Optional<Hotel> optional = repositorioHotel.findById(id);
@@ -591,5 +603,5 @@ public class controladorWeb {
 			return "error";
 		}
 	}
-	// CONTROLADOR PARTE USUARIOS
+	
 }

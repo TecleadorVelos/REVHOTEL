@@ -3,6 +3,7 @@ package com.example.demo.classes;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -90,5 +91,54 @@ public class Usuario {
 		public void setHistorialReservas(List<Reserva> historialReservas) {
 			this.historialReservas = historialReservas;
 		}
+		public void borrarReserva(Reserva res) {
+			
+			Iterator<Reserva> iterator = reservas.iterator();
+	        while (iterator.hasNext()) {
+	            Reserva reserva = iterator.next();
+	            if (reserva.equals(res)) {
+	                iterator.remove();
+	            }
+	        }
+		}
+		public void anadirPuntos(THabitacion type) {
+			switch(type){
+				case NORMAL : this.puntos += 10;
+					break;
+				case DOBLE: this.puntos += 25;
+					break;
+				case SUITE: this.puntos += 60;
+					break;
+				}
+		}
+		public void cambiarPuntos(THabitacion tipoprevio, THabitacion tipoActual ) {
+			switch(tipoprevio){
+				case NORMAL : 
+						if (tipoActual.equals(THabitacion.NORMAL)) this.puntos += 0;
+						else if (tipoActual.equals(THabitacion.DOBLE)) this.puntos += 15;
+						else this.puntos += 50;
+					break;
+				case DOBLE:
+						if (tipoActual.equals(THabitacion.NORMAL)) this.puntos -= 15;
+						else if (tipoActual.equals(THabitacion.DOBLE)) this.puntos += 0;
+						else this.puntos += 35;
+					break;
+				case SUITE: 
+						if (tipoActual.equals(THabitacion.NORMAL)) this.puntos -= 50;
+						else if (tipoActual.equals(THabitacion.DOBLE)) this.puntos -= 35;
+						else this.puntos += 0;
+					break;
+				}
+		}
+		public void borrarPuntos(THabitacion tipo) {
+			switch(tipo){
+				case NORMAL : this.puntos -= 10;
+					break;
+				case DOBLE: this.puntos -= 25;
+					break;
+				case SUITE: this.puntos -= 60;
+					break;
 		
+				}
+		}
 }

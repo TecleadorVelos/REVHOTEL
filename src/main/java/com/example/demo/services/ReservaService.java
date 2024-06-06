@@ -3,8 +3,12 @@ package com.example.demo.services;
 import java.time.LocalDate;
 
 
+import org.springframework.stereotype.Service;
+
 import com.example.demo.classes.Reserva;
 
+
+@Service
 public class ReservaService {
 	
 	public ReservaService() {}
@@ -25,6 +29,7 @@ public class ReservaService {
 			
 			return devolver;
 		
-		}   
+		}
 }
+	
 

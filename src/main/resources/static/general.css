@@ -44,3 +44,6 @@ h1.greeting-user{
 	font-size: 3.5vw;
 	font-weight: bold;
 }
+.centrar {
+	text-align: center;
+}
