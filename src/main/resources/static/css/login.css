@@ -9,17 +9,17 @@ body{
 	justify-content: center;
 	align-items: center;
 	min-height: 100vh;
-	background:  rgba(0,0,0, .2);
+	background: url(/images/fondoLogin.jpg) no-repeat;
 	background-size: cover;
 	background-position: center;
 }
 .wrapper {
 	width: 420px;
-	background: rgba(127,140,141);
+	background: transparent;
 	border: 2px solid rgba(255,255,255, .2);
 	backdrop-filter: blur(20px);
 	box-shadow: 0 0 10px rgba(0,0,0, .2);
-	color: rgb(255, 255, 255); /* Color de los emoticonos */
+	color: #fff;
 	border-radius: 10px;
 	padding: 30px 40px;
 		
@@ -46,11 +46,11 @@ body{
 	border: 2px solid rgb(255, 255, 255);
 	border-radius: 40px;
 	font-size: 16px;
-	color:white; /* Color del texto al ser  introducido por usuario */
+	color: black;
 	padding: 20px 45px 20px 20px;
 }
 .input-box input::placeholder {
-	color: white;
+	color: rgb(0, 0, 0);
 }
 .input-box i {
 	position: absolute;
@@ -71,4 +71,10 @@ body{
 	font-size: 16px;
 	color: #333;
 	font-weight: 600;
+}
+a .btn #CrearUsuario  {
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	vertical-align: center;
 }

@@ -33,7 +33,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
-		</dependency>	
+		</dependency>
+	<!-- SECURITY DEPENDENCY -->
+	<dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>	
 	<!-- DATABASE DEPENDENCIES -->
 		<dependency>
 			<groupId>com.h2database</groupId>

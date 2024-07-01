@@ -32,6 +32,8 @@ public class Usuario {
 		@OneToMany
 		private List<Reserva> historialReservas;
 		
+		private String role;
+		
 		protected Usuario() {}
 		public Usuario(String nombre, String password,LocalDate fechaAlta) {
 			this.username= nombre;
@@ -39,6 +41,8 @@ public class Usuario {
 			this.fechaAlta = fechaAlta;
 			this.numReservas = 0;
 			this.puntos = 0;
+			this.reservas = new ArrayList<>();
+			this.historialReservas = new ArrayList<>();
 			
 		}
 		public String getContraseña() {
@@ -141,4 +145,11 @@ public class Usuario {
 		
 				}
 		}
+		public String getRole() {
+			return role;
+		}
+		public void setRole(String role) {
+			this.role = role;
+		}
+		
 }

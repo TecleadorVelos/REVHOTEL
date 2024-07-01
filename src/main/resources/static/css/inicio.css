@@ -1,7 +1,7 @@
 /* Estilos personalizados */
         .bg-image {
             /* Establecer la imagen de fondo */
-            background-image: url('Hotel2.jpg');
+            background-image: url('/images/Hotel2.jpg');
             /* Ajustar el tamaño de la imagen de fondo */
             background-size: cover;
             /* Centrar la imagen de fondo */
@@ -9,15 +9,15 @@
             /* Fijar la imagen de fondo para que no se desplace con el contenido */
             background-attachment: fixed;
             /* Altura mínima para ocupar todo el viewport */
-            min-height: 100vh;
+            min-height: 90vh;
         }
         footer {
             background-color: #343a40; /* Color de fondo */
             color: #ffffff; /* Color del texto */
             padding: 20px 0; /* Espaciado interno */
-            position:sticky;
-			top:100%;
-			overflow: hidden
+            /*position:sticky; */
+			/*top:100%; */
+			/*overflow: hidden */
         }
 
         /* Estilos para el texto del footer */
@@ -30,6 +30,16 @@
 			background-color: #fff; /* Fondo blanco */
 		    border-radius: 10px; /* Esquinas redondeadas */
 		    padding: 20px; /* Añadir espacio interno para el contenido */
+		}
+		div.caja-blanca-short {
+	
+			background-color: #fff; /* Fondo blanco */
+		    border-radius: 10px; /* Esquinas redondeadas */
+		    padding: 20px; /* Añadir espacio interno para el contenido */
+		    margin: 0 auto;
+		    width: 30%;
+		    /*max-width: 600px; */
+		    
 		}
 		.espacio-entre-contenedores {
 			margin-bottom: 20px;

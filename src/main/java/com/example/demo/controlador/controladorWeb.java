@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,7 @@ import com.example.demo.classes.THabitacion;
 import com.example.demo.classes.Usuario;
 import com.example.demo.classes.UsuarioRepository;
 import com.example.demo.services.ReservaService;
+import com.example.demo.services.UsuarioService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -49,6 +51,9 @@ public class controladorWeb {
 	@Autowired
 	private PromocionesRepository repositorioPromociones;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@GetMapping("/")
 	public String menuprincipal(Model model) {
 		return "inicio";
@@ -61,30 +66,69 @@ public class controladorWeb {
 		return "loginUsuarios";
 	
 	}
+	
+	/* DEPRECATED BORRAR LO ULTIMO
+	login usuarios tambien logea al administrador 
 	@PostMapping("/loginUsuarios") //Realiza la acción POST para iniciar sesión
     public String procesarLogin(Model model, @RequestParam String nombreUsuario, @RequestParam String contrasena) {
         
 		Optional<Usuario> optional = repositorioUsuarios.findByUsername(nombreUsuario);
 		
+		
 		if (optional.isPresent()) {
 			Usuario user = optional.get();
 			Long id = user.getId();
 			
-			if (contrasena.equals(user.getContraseña())) {
-				return "redirect:/menuUsuarios/" + id ;
+			if (user.getUsername().equals("admin2")) {
+				if (contrasena.equals("admin2")) {
+					
+					return "redirect:/admin/menuAdmin";
+				}else {
+					model.addAttribute("message", "Contraseña Incorrecta, acceso administrador fallido.");
+		            return "error";
+				}
+			}else {
+				if (contrasena.equals(user.getContraseña())) {
+					return "redirect:/menuUsuarios/" + id ;
 			}else {
 				model.addAttribute("message", "Contraseña Incorrecta, vuelva a intentar");
 	            return "error";
+				  }
 			}
-            
+     
         } else {
         	model.addAttribute("message", "Error en el login del Usuario");
             return "error";
         }
     }
-	
+	*/
+	@GetMapping("/crearUsuario")
+	public String formularioCrearUsuario(Model model) {
+		return "formularioCrearUsuario";
+	}
+	@PostMapping("/crearUsuario")
+	public String crearUsuario(Model model, @RequestParam String nombre, @RequestParam String contrasena) {
+		
+		//Comprobamos que el nombre sea válido
+		List<Usuario> usuarios = repositorioUsuarios.findAll();
+		UsuarioService servicioUsuario = new UsuarioService();
+		boolean nombrevalido = servicioUsuario.nombreValido(nombre,usuarios);
+		
+		if (nombrevalido) {
+			String contrasenacodificada = passwordEncoder.encode(contrasena);
+			Usuario nuevoUsuario = new Usuario(nombre,contrasenacodificada, LocalDate.now());
+			nuevoUsuario.setRole("USER");
+			repositorioUsuarios.save(nuevoUsuario);
+			return "loginUsuarios";
+		}else {
+			model.addAttribute("message", "Error, nombre ya en uso. Pruebe con uno nuevo.");
+            return "errorFormularioCrearUsuario";
+		}
+		
+		
+	}
 	//CONTROLADOR LOGIN ADMIN
-	
+	/* BORRAR NO TIENE SENTIDO USAR ESTE INICIO DE SESIÓN
 	@GetMapping("/loginAdmin") //Muestra la pantalla de inicio de sesion del admin
 	public String loginAdministrador(Model model) {
 		return "loginAdmin";
@@ -108,7 +152,7 @@ public class controladorWeb {
         	model.addAttribute("message", "Acceso denegado.");
             return "error";
         }	
-	}
+	} */
 	
 	//CONTROLADOR MENU USUARIOS
 	@GetMapping("/menuUsuarios/{id}") //Muestra el menú que ve un usuario
@@ -603,5 +647,9 @@ public class controladorWeb {
 			return "error";
 		}
 	}
-	
+	@GetMapping("/errorInicioSesion")
+	public String errorInicioSesionUsuario(Model model) {
+		model.addAttribute("message", "Error en el incio de sesión. Las credenciales no coinciden.");
+		return "error";
+	}
 }
