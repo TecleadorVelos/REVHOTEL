@@ -32,7 +32,7 @@
 	   		<tbody>
 		        {{#promociones}}
 		        <tr>
-		          	<td class="numero-promocion"></td class="numero-promocion">
+		          	<td class="numero-promocion"></td>
 		            <td>{{oferta}}</td>
 		            <td>{{fechainicio}}</td>
 		            <td>{{fechafinal}}</td>
@@ -50,6 +50,13 @@
     		<a id="volverAtras" href="/menuAdmin" "role="button" class="btn btn-dark" > Volver atrás </a>
     	</div>
     </div>
-    <script src="general-code.js"></script>
+    <script>
+		document.addEventListener('DOMContentLoaded', (event) => {
+		    const rows = document.querySelectorAll('#tablaPromociones tbody tr');
+		    rows.forEach((row, index) => {
+		        row.querySelector('.numero-promocion').innerText = index + 1;
+		    });
+		});
+	</script>
 	</body>
 </html>

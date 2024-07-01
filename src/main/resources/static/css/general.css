@@ -32,8 +32,8 @@ p.no-line-break {
         display: inline;
     }
 h1.greeting-user{
-	padding: 2vw !important;
-	text-align: center !important;
+	
+	text-align: left !important;
 	font-size: 3.5vw !important;
 	font-weight: bold!important;
 }
@@ -46,4 +46,18 @@ h1.greeting-user{
 }
 .centrar {
 	text-align: center;
+}
+.contenedor-imagen{
+	width: 100%; /* Asegura que el contenedor ocupe el 100% del ancho disponible */
+    height:auto; /* Mantiene la proporción de aspecto de la imagen */
+    max-width: 100%; /* Limita el ancho máximo del contenedor al 100% del contenedor padre */
+    max-height: 100%; /* Limita la altura máxima del contenedor al 100% del contenedor padre */
+    overflow:auto; /* Evita que la imagen sobresalga del contenedor */
+    display:flex; 
+    border-radius: 20px;
+}
+.contenedor-imagen img {
+	width: 100%; /* Asegura que la imagen ocupe el 100% del ancho disponible dentro del contenedor */
+    height: auto; /* Mantiene la proporción de aspecto de la imagen */
+    display: block; /* Asegura que la imagen se muestre como un bloque */
 }

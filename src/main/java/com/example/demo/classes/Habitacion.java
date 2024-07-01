@@ -24,7 +24,7 @@ public class Habitacion {
 	private Integer precio; /* Precio por noche */
 	private String numero;
 	
-	@OneToMany(mappedBy="habitacion")
+	@OneToMany(mappedBy="habitacion", cascade=CascadeType.ALL)
 	private List<Reserva> reservas = new ArrayList<>();
 	
 	@ManyToOne

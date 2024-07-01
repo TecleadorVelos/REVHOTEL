@@ -24,7 +24,9 @@ public class Hotel {
 		@OneToMany(cascade=CascadeType.ALL, mappedBy="hotel")
 		private List<Habitacion> habitaciones = new ArrayList<Habitacion>(); //Podria mejorarse con un mapa, considerar en un futuro
 		private Integer numHabitaciones;
+		private List<String> imagenes = new ArrayList<>();
 		
+
 		protected Hotel() {}
 		
 		public Hotel (String name) {
@@ -85,5 +87,12 @@ public class Hotel {
 				return true;
 			}
 			else return false;
+		}
+		public List<String> getImagenes() {
+			return imagenes;
+		}
+
+		public void setImagenes(List<String> imagenes) {
+			this.imagenes = imagenes;
 		}
 }

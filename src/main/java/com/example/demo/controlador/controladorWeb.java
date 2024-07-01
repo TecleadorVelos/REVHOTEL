@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -522,7 +523,9 @@ public class controladorWeb {
 			model.addAttribute("nombre",hotel.getNombre());
 			model.addAttribute("numHabitaciones",hotel.getNumHabitaciones());
 			model.addAttribute("habitaciones", hotel.getHabitaciones());
+			model.addAttribute("imagenes", hotel.getImagenes());
 			
+		
 			return "gestionHabitaciones";
 		}
 		else {
