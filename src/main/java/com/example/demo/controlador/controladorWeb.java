@@ -61,47 +61,12 @@ public class controladorWeb {
 	
 	//CONTROLADOR LOGIN USUARIOS
 	
-	@GetMapping("/loginUsuarios") //Muestra el login usuarios
+	@GetMapping("/login") //Muestra el login 
 	public String loginUsuarios(Model model) {
-		return "loginUsuarios";
+		return "login";
 	
 	}
 	
-	/* DEPRECATED BORRAR LO ULTIMO
-	login usuarios tambien logea al administrador 
-	@PostMapping("/loginUsuarios") //Realiza la acción POST para iniciar sesión
-    public String procesarLogin(Model model, @RequestParam String nombreUsuario, @RequestParam String contrasena) {
-        
-		Optional<Usuario> optional = repositorioUsuarios.findByUsername(nombreUsuario);
-		
-		
-		if (optional.isPresent()) {
-			Usuario user = optional.get();
-			Long id = user.getId();
-			
-			if (user.getUsername().equals("admin2")) {
-				if (contrasena.equals("admin2")) {
-					
-					return "redirect:/admin/menuAdmin";
-				}else {
-					model.addAttribute("message", "Contraseña Incorrecta, acceso administrador fallido.");
-		            return "error";
-				}
-			}else {
-				if (contrasena.equals(user.getContraseña())) {
-					return "redirect:/menuUsuarios/" + id ;
-			}else {
-				model.addAttribute("message", "Contraseña Incorrecta, vuelva a intentar");
-	            return "error";
-				  }
-			}
-     
-        } else {
-        	model.addAttribute("message", "Error en el login del Usuario");
-            return "error";
-        }
-    }
-	*/
 	@GetMapping("/crearUsuario")
 	public String formularioCrearUsuario(Model model) {
 		return "formularioCrearUsuario";
@@ -128,31 +93,6 @@ public class controladorWeb {
 		
 	}
 	//CONTROLADOR LOGIN ADMIN
-	/* BORRAR NO TIENE SENTIDO USAR ESTE INICIO DE SESIÓN
-	@GetMapping("/loginAdmin") //Muestra la pantalla de inicio de sesion del admin
-	public String loginAdministrador(Model model) {
-		return "loginAdmin";
-	}
-	@PostMapping("/loginAdmin") //Realiza la acción POST del Admin
-	public String procesarLoginAdministrador(Model model, @RequestParam String nombreAdmin, @RequestParam String contrasena) {
-		
-		Optional<Usuario> optional = repositorioUsuarios.findByUsername(nombreAdmin);
-		
-		if (optional.isPresent()) {
-			Usuario user = optional.get();
-			
-			if (contrasena.equals(user.getContraseña())) {
-				return "redirect:/menuAdmin";
-			}else {
-				model.addAttribute("message", "Contraseña Incorrecta, acceso denegado.");
-	            return "error";
-			}
-            
-        } else {
-        	model.addAttribute("message", "Acceso denegado.");
-            return "error";
-        }	
-	} */
 	
 	//CONTROLADOR MENU USUARIOS
 	@GetMapping("/menuUsuarios/{id}") //Muestra el menú que ve un usuario
@@ -481,6 +421,7 @@ public class controladorWeb {
 		Usuario user= optional.get();
 		model.addAttribute("usuario", user);
 		model.addAttribute("numReservas", user.getNumReservas());
+		model.addAttribute("id", id);
 		return "historialReservas";
 		
 	}

@@ -35,14 +35,14 @@ public class SecurityConfig {
 		http
 			.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(registry -> {
-				registry.requestMatchers("/", "/loginUsuarios", "/crearUsuario", "/h2-console/**", "/images/**", "/css/**", "/js/**").permitAll();
+				registry.requestMatchers("/", "/login", "/crearUsuario", "/h2-console/**", "/images/**", "/css/**", "/js/**").permitAll();
 				registry.requestMatchers("/menuAdmin","/hoteles","/promociones", "formularioPromocion", "/hotelesyhabitaciones/**", "/anadirhabitacion/**").hasRole("ADMIN");
 				registry.requestMatchers("/menuUsuarios/**","/historialreservas/**","/reservas/**",
 						"/nuevareserva/**", "/editarreserva/**").hasRole("USER");
 				registry.anyRequest().authenticated();
 			})
 			.formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer
-				.loginPage("/loginUsuarios")
+				.loginPage("/login")
 				.loginProcessingUrl("/loginUsuarios")
                 .usernameParameter("nombreUsuario")
                 .passwordParameter("contrasena")
