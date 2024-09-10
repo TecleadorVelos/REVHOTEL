@@ -85,7 +85,7 @@ public class controladorWeb {
 			Usuario nuevoUsuario = new Usuario(nombre,contrasenacodificada, LocalDate.now());
 			nuevoUsuario.setRole("USER");
 			repositorioUsuarios.save(nuevoUsuario);
-			return "loginUsuarios";
+			return "/login";
 		}else {
 			model.addAttribute("message", "Error, nombre ya en uso. Pruebe con uno nuevo.");
             return "errorFormularioCrearUsuario";
@@ -147,9 +147,11 @@ public class controladorWeb {
 		List<Hotel> hoteles = repositorioHotel.findAll();
 		model.addAttribute("id", id);
 		model.addAttribute("hoteles", hoteles);
+		model.addAttribute("hotel", hoteles.get(0));
 		return "formularioNuevaReserva";
 		
 	}
+	
 	@PostMapping("/nuevareserva/{id}") //POST para realizar una nueva reserva
 	public String crearNuevaReserva(Model model,@PathVariable Long id, @RequestParam String selectorHotel, @RequestParam String tipoHabitacion, 
 			@RequestParam String fechaEntrada, @RequestParam String fechaSalida) {
@@ -247,10 +249,12 @@ public class controladorWeb {
 							//2º PASO
 							habi.anadirReserva(nuevareserva);
 							//3º PASO
-							repositorioHabitacion.save(habi);
+							//repositorioHabitacion.save(habi);
 							//4º PASO
+							//repositorioUsuarios.save(user);
+							
 							repositorioReservas.save(nuevareserva);
-							repositorioUsuarios.save(user);
+							
 							break;
 						}
 						
@@ -525,7 +529,7 @@ public class controladorWeb {
 			model.addAttribute("habitaciones", hotel.getHabitaciones());
 			model.addAttribute("imagenes", hotel.getImagenes());
 			
-			 
+			 /* CODIGO PARA GUARDAR LAS IMAGENES EN CADA HOTEL
 				List<String> lista2 = new ArrayList<>(Arrays.asList("/images/hotel21.jpg","/images/hotel22.jpg", "/images/hotel23.jpg"));
 				List<String> lista3 = new ArrayList<>(Arrays.asList("/images/hotel31.jpg","/images/hotel32.jpg", "/images/hotel33.jpg"));
 				List<String> lista4 = new ArrayList<>(Arrays.asList("/images/hotel41.jpg","/images/hotel42.jpg", "/images/hotel43.jpg"));
@@ -554,8 +558,9 @@ public class controladorWeb {
 				
 				Hotel hotel6 = repositorioHotel.findByNombre("Agadir").get();
 				hotel6.setImagenes(lista6);
-				repositorioHotel.save(hotel6);
-			return "gestionHabitaciones";
+				repositorioHotel.save(hotel6); */
+			
+			return "gestionHabitaciones";      
 		}
 		else {
 			model.addAttribute("message", "Se ha producido un error, hotel no encontrado.");
