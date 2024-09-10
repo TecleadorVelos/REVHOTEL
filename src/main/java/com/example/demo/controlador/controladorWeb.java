@@ -28,6 +28,7 @@ import com.example.demo.classes.ReservaRepository;
 import com.example.demo.classes.THabitacion;
 import com.example.demo.classes.Usuario;
 import com.example.demo.classes.UsuarioRepository;
+import com.example.demo.services.PromocionService;
 import com.example.demo.services.ReservaService;
 import com.example.demo.services.UsuarioService;
 
@@ -169,14 +170,31 @@ public class controladorWeb {
 		 * 6.3º- Al acabar las reservas de la habitacion, si reservarokhab esta a true se realiza la reserva 
 		 * 6.4º - sino se pasa a la siguiente habitacion.*/
 		
+		LocalDate fechaInicioReserva2 = null;
+		LocalDate fechaFinReserva2 = null;
 		
 		//Comprobamos que el formato de las fechas sea el correcto
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		
-	    LocalDate fechaInicioReserva2 = LocalDate.parse(fechaEntrada, formatter);
-
-	    LocalDate fechaFinReserva2 = LocalDate.parse(fechaSalida, formatter);
+		try {
+			 fechaInicioReserva2 = LocalDate.parse(fechaEntrada, formatter);
+		}catch (DateTimeParseException e) {
+			model.addAttribute("message", "Error, en formato de la fecha de entrada.");
+            return "errorFormularioNuevaReserva";
+		}
+		try {
+			fechaFinReserva2 = LocalDate.parse(fechaSalida, formatter);
+		}catch(DateTimeParseException e) {
+			model.addAttribute("message", "Error, en formato de la fecha de salida.");
+            return "errorFormularioNuevaReserva";
+		}
+	     
+	    //Comprobamos que las fechas introducidas tienen sentido (que la fecha de entrada sea anterior a la de salida)
+	    ReservaService comprobadorFecha = new ReservaService();
+	    if (!(comprobadorFecha.fechasCorrectasReserva(fechaInicioReserva2, fechaFinReserva2))) {
+	    	model.addAttribute("message", "Error, la fecha de entrada tiene que ser anterior a la de salida.");
+            return "errorFormularioNuevaReserva";
+	    }
 		
 		//Convertimos el tipohabitacion a THabitacion
 		THabitacion tipo = null;
@@ -453,21 +471,33 @@ public class controladorWeb {
 	@PostMapping("/crearpromocion") //POST para crear promocion
 	public String crearpromocion(Model model, @RequestParam Double oferta , @RequestParam String fechainicio, @RequestParam String fechafinal) {
 		
+		LocalDate dateinicio = null;
+		LocalDate datefinal = null;
+		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		try {
-		    LocalDate dateinicio = LocalDate.parse(fechainicio, formatter);
-		    LocalDate datefinal = LocalDate.parse(fechafinal, formatter);
+			
+			try {
+				dateinicio = LocalDate.parse(fechainicio, formatter);
+			}catch (DateTimeParseException e) {
+				model.addAttribute("message", "Error, formato fecha inicio incorrecta.");
+	            return "errorCrearPromocion";
+			}
+			try {
+				datefinal = LocalDate.parse(fechafinal, formatter);
+			}catch(DateTimeParseException e) {
+				model.addAttribute("message", "Error, formato fecha final incorrecta.");
+	            return "errorCrearPromocion";
+			}
 		    
+		    PromocionService comprobarFechas = new PromocionService();
+		    if (!(comprobarFechas.fechasCorrectasPromocion(dateinicio, datefinal))) {
+		    	model.addAttribute("message", "Error, la fecha de salida no puede ser anterior a la de entrada.");
+	            return "errorCrearPromocion";
+		    }
 		    Promocion nuevapromo = new Promocion (oferta,dateinicio,datefinal);
 		    repositorioPromociones.save(nuevapromo);
 		
 		    return "redirect:/promociones";
-		    
-		} catch (DateTimeParseException e) {
-			model.addAttribute("message", "Error, en la conversión de fechas.");
-            return "error";
-		}
-
 	}
 	@GetMapping("/borrarpromocion/{id}") //Delete de borrar promocion
 	public String borrarpromocion(Model model, @PathVariable Long id) {

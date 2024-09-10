@@ -30,6 +30,12 @@ public class ReservaService {
 			return devolver;
 		
 		}
+	//verifica que la fecha de entrada sea anterior a la fecha de salida
+	public boolean fechasCorrectasReserva(LocalDate fechaEntrada, LocalDate fechaSalida) {
+		
+		if (fechaEntrada.isBefore(fechaSalida)) return true;
+		else return false;
+	}
 }
 	
 
