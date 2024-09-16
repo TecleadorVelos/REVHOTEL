@@ -17,10 +17,10 @@
 			<div class="col d-flex justify-content-start">
 			    <form id="crearHotel" method="POST" action="/crearhotel" class="row g-2">
 			    	<div class="col-auto">
-			    		<input type="text" class="form-control" placeholder="Introduce nombre hotel" name="nombrehotel">
+			    		<input id="camponomHotel" type="text" class="form-control" placeholder="Introduce nombre hotel" name="nombrehotel">
 			    	</div>
 			    	<div class="col-auto">
-			    		<input type="submit" value="Crear nuevo hotel" class="btn btn-dark">	
+			    		<input id="btnenviar" type="submit" value="Crear nuevo hotel" class="btn btn-dark">	
 			    	</div>
 			    </form>
 		    </div>
@@ -30,7 +30,7 @@
 			    		<input type="text" class="form-control" placeholder="Introduce identificador" name="id">
 			    	</div>
 			    	<div class="col-auto">
-			    		<input type="submit" value="Eliminar hotel" class="btn btn-danger">	
+			    		<input type="submit" value="Eliminar hotel" class="btn btn-danger" id="btnenviardelete">	
 			    	</div>
 			    </form>
 		    </div>

@@ -533,7 +533,7 @@ public class controladorWeb {
 		}
 		else {
 			model.addAttribute("message", "Se ha producido un error, hotel no encontrado.");
-			return "error";
+			return "errorGestionHoteles";
 		}
 		
 	}
@@ -642,6 +642,7 @@ public class controladorWeb {
 		if (optional.isPresent()) {
 			Optional<Habitacion> opthabitacion = repositorioHabitacion.findById(habitacionId);
 			if (opthabitacion.isPresent()) {
+				optional.get().setNumHabitaciones(optional.get().getNumHabitaciones() - 1);
 				repositorioHabitacion.deleteById(habitacionId);
 				return "redirect:/hotelesyhabitaciones/" + id;
 			}
