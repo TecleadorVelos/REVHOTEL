@@ -24,7 +24,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @SpringBootTest (webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class E2ESeleniumTests {
+public class E2ESeleniumAdminTests {
 	
 	@LocalServerPort
 	int port;
