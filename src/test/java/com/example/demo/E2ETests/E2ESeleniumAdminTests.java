@@ -278,7 +278,7 @@ public class E2ESeleniumAdminTests {
 		
 		
 		WebElement ultimafila = filas.get(numfilasinicial-1);
-		ultimafila.findElement(By.xpath(".//td[5]")).click();;
+		ultimafila.findElement(By.xpath(".//td[5]")).click();
 		
 		dormir(3000);
 		
@@ -316,26 +316,5 @@ public class E2ESeleniumAdminTests {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public void iniciarSesionUsuario() {
-		
-		driver.get("http://localhost:" + port);
-		
-		driver.findElement(By.id("accesoUsuarios")).click();
-		
-		new WebDriverWait (driver, Duration.ofSeconds(2)); //Espera de 2 segundos mientras carga la página
-		
-		WebElement nombreUsuario = driver.findElement(By.id("nombreUsuario"));
-		WebElement contrasena = driver.findElement(By.id("contrasena"));
-		
-		nombreUsuario.sendKeys("jorge");
-		contrasena.sendKeys("jorge");
-		
-		driver.findElement(By.id("enviarForm")).click();
-	}
-	
-	//TESTS DE USUARIO
-	
-	
+	}	
 }

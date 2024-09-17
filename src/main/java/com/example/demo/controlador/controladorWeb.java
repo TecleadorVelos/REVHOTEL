@@ -559,7 +559,8 @@ public class controladorWeb {
 			model.addAttribute("habitaciones", hotel.getHabitaciones());
 			model.addAttribute("imagenes", hotel.getImagenes());
 			
-			 /* CODIGO PARA GUARDAR LAS IMAGENES EN CADA HOTEL
+			 // CODIGO PARA GUARDAR LAS IMAGENES EN CADA HOTEL
+			/*	List<String> lista1 = new ArrayList<>(Arrays.asList("/images/hotel11.jpg","/images/hotel12.jpg", "/images/hotel13.jpg"));
 				List<String> lista2 = new ArrayList<>(Arrays.asList("/images/hotel21.jpg","/images/hotel22.jpg", "/images/hotel23.jpg"));
 				List<String> lista3 = new ArrayList<>(Arrays.asList("/images/hotel31.jpg","/images/hotel32.jpg", "/images/hotel33.jpg"));
 				List<String> lista4 = new ArrayList<>(Arrays.asList("/images/hotel41.jpg","/images/hotel42.jpg", "/images/hotel43.jpg"));
@@ -568,15 +569,15 @@ public class controladorWeb {
 				
 				
 				
-				Hotel hotel2 = repositorioHotel.findByNombre("Gran España").get();
+				Hotel hotel2 = repositorioHotel.findByNombre("Coliseo Azul").get();
 				hotel2.setImagenes(lista2);
 				repositorioHotel.save(hotel2);
 				
-				Hotel hotel3 = repositorioHotel.findByNombre("Blue Lagoon").get();
-				hotel3.setImagenes(lista3);
+				Hotel hotel3 = repositorioHotel.findByNombre("Luxury Palm").get();
+				hotel3.setImagenes(lista1);
 				repositorioHotel.save(hotel3);
-				
-				
+				*/
+				/*
 				Hotel hotel4 = repositorioHotel.findByNombre("Boadilla Royale").get();
 				hotel4.setImagenes(lista4);
 				repositorioHotel.save(hotel4);
