@@ -8,7 +8,10 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -20,6 +23,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @SpringBootTest (webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class E2ESeleniumUserTests {
 
 	
@@ -42,6 +46,7 @@ public class E2ESeleniumUserTests {
 	//TESTS GENERALES USUARIO
 	
 	@Test
+	@Order(1)
 	@DisplayName("TEST 1: MOSTRAR HISTORIAL DE RESERVAS")
 	public void historialReservasTest() {
 		this.iniciarSesionUsuario();
@@ -55,6 +60,7 @@ public class E2ESeleniumUserTests {
 			
 	}
 	@Test
+	@Order(2)
 	@DisplayName("TEST 2: CREAR RESERVA ÉXITO")
 	public void crearReservaExitoTest() {
 		this.iniciarSesionUsuario();
@@ -77,8 +83,8 @@ public class E2ESeleniumUserTests {
 		
 		selector.sendKeys("Blue Lagoon");
 		tipohabitacion.sendKeys("Normal");
-		fechaentrada.sendKeys("20/08/2024");
-		fechasalida.sendKeys("27/08/2024");
+		fechaentrada.sendKeys("03/03/2025");
+		fechasalida.sendKeys("10/03/2025");
 		
 		driver.findElement(By.id("boton_enviar_reserva")).click();
 		dormir(3000);
@@ -91,6 +97,7 @@ public class E2ESeleniumUserTests {
 	}
 	
 	@Test
+	@Order(3)
 	@DisplayName("TEST 3: CREAR RESERVA FALLO")
 	public void crearReservaFailTest() {
 		this.iniciarSesionUsuario();
@@ -120,6 +127,7 @@ public class E2ESeleniumUserTests {
 	}
 	
 	@Test
+	@Order(4)
 	@DisplayName("TEST 4: EDITAR RESERVA")
 	public void editarReservaExitoTest() {
 		this.iniciarSesionUsuario();
@@ -170,6 +178,7 @@ public class E2ESeleniumUserTests {
 	}
 	
 	@Test
+	@Order(5)
 	@DisplayName("TEST 5: ELIMINAR RESERVA")
 	public void eliminarReservaTest() {
 		this.iniciarSesionUsuario();

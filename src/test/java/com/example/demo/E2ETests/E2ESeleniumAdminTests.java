@@ -11,7 +11,10 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -24,6 +27,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @SpringBootTest (webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class E2ESeleniumAdminTests {
 	
 	@LocalServerPort
@@ -44,6 +48,7 @@ public class E2ESeleniumAdminTests {
 	
 	//TESTS GENERALES
 	@Test
+	@Order(1)
 	@DisplayName("TEST 1: Botón ir App funciona")
 	public void botonPagPrincipalTest() {
 		driver.get("http://localhost:" + port);
@@ -59,6 +64,7 @@ public class E2ESeleniumAdminTests {
 	
 	//TESTS DE ADMINISTRADOR
 	@Test
+	@Order(2)
 	@DisplayName("TEST 2: Iniciamos Sesión como Admin")
 	public void iniciarSesionAdminTest() { 
 		
@@ -70,6 +76,7 @@ public class E2ESeleniumAdminTests {
 	}
 	
 	@Test
+	@Order(3)
 	@DisplayName("TEST 3: Crear promoción")
 	public void establecerPromocionTest() { 
 		
@@ -115,6 +122,7 @@ public class E2ESeleniumAdminTests {
 	}
 	
 	@Test
+	@Order(4)
 	@DisplayName("TEST 4: Borrar promoción")
 	public void borrarPromocionTest() {
 		
@@ -147,6 +155,7 @@ public class E2ESeleniumAdminTests {
 		
 	}
 	@Test
+	@Order(5)
 	@DisplayName("TEST 5: Crear Hotel")
 	public void crearHotelTest() {
 		this.iniciarSesionAdmin();
@@ -169,6 +178,7 @@ public class E2ESeleniumAdminTests {
 	}
 	
 	@Test
+	@Order(6)
 	@DisplayName("TEST 6: Borrar Hotel éxito")
 	public void borrarHotelExitoTest() {
 		this.iniciarSesionAdmin();
@@ -202,6 +212,7 @@ public class E2ESeleniumAdminTests {
 	}
 	
 	@Test
+	@Order(7)
 	@DisplayName("TEST 7: Borrar Hotel fail")
 	public void borrarHotelFailTest() {
 		
@@ -221,6 +232,7 @@ public class E2ESeleniumAdminTests {
 		assertTrue(encabezado.getText().equals("Se ha producido un error, hotel no encontrado."), "Error en el test.");
 	}
 	@Test
+	@Order(8)
 	@DisplayName("TEST 8: Crear Habitación")
 	public void crearHabitacionTest() {
 		
@@ -258,6 +270,7 @@ public class E2ESeleniumAdminTests {
 	}
 	
 	@Test
+	@Order(9)
 	@DisplayName("TEST 9: Borrar Habitación")
 	public void borrarHabitacionTest() {
 		
