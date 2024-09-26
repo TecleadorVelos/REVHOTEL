@@ -61,3 +61,22 @@ h1.greeting-user{
     height: auto; /* Mantiene la proporción de aspecto de la imagen */
     display: block; /* Asegura que la imagen se muestre como un bloque */
 }
+#carrusel {
+    min-height: 300px; /* Ajusta según tus necesidades */
+}
+#carousel-inner {
+    min-height: 300px; /* Ajusta según tus necesidades */
+    visibility: visible !important; /* Asegura que el elemento sea visible */
+}
+
+.carousel-item img {
+    width: 100%;
+    height: auto;
+    max-height: 350px; /* Ajusta según sea necesario */
+    min-height: 100%; /* Ajusta según tus necesidades */
+    overflow:auto;
+    display:flex;
+    border-radius:20px;
+    visibility: visible !important; /* Asegura que el elemento sea visible */
+}
+

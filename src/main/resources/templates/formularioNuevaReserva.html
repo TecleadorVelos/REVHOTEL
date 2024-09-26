@@ -25,7 +25,7 @@
 								        	<label for="serie">Seleccione hotel: </label>
 											<select id="selectorHotel" name="selectorHotel">
 											{{#hoteles}}
-											  <option value="{{nombre}}" selected>{{nombre}}</option>
+											  <option value="{{nombre}}" data-imagenes="{{#imagenes}}{{.}},{{/imagenes}}" selected>{{nombre}}</option>
 											{{/hoteles}}
 											</select>
 											
@@ -51,13 +51,21 @@
 								        </form>
 		        					</div>
 		        					<div class="col dflex md-6">
-		        						<!-- METER AQUI UN SLIDER DE FOTOS QUE DEPENDA DEL HOTEL SELECCIONADO -->
-					                    <section class="contenedor-imagen" id="imagenesHotel">																	        								            							                	
-												{{#hotel.imagenes}}						        								            
-								                	<img src="{{.}}" alt="Imagen">
-								                {{/hotel.imagenes}}										            								        																	                									            								        
-										</section>
-										        					
+		        		
+										<div id="carrusel" class="carousel slide">
+											  <div id="carousel-inner" class="carousel-inner">
+											    
+											  </div>
+											  <button class="carousel-control-prev" type="button" data-bs-target="#carrusel" data-bs-slide="prev">
+											    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+											    <span class="visually-hidden">Previous</span>
+											  </button>
+											  <button class="carousel-control-next" type="button" data-bs-target="#carrusel" data-bs-slide="next">
+											    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+											    <span class="visually-hidden">Next</span>
+											  </button>
+											</div>
+																												        					
 		        					</div>
 		        			</div>	
 		        		</div>
@@ -65,6 +73,62 @@
 		 </div>
     </body>
     <script>
+    	const myCarouselElement = document.querySelector('#carrusel')
+
+			const carousel = new bootstrap.Carousel(myCarouselElement, {
+			  interval: 3000,
+			  touch: false
+			})
+    	//var myCarousel = new bootstrap.Carousel(document.getElementById('carrusel'));
+   		var selector = document.getElementById("selectorHotel");
+        var imagenesContainer = document.getElementById("carousel-inner");
+
+        selector.addEventListener("change", function() {
+            // Limpiar el contenedor de imágenes
+    		imagenesContainer.innerHTML = ''; // Limpiar el contenedor
+
+            var selectedOption = selector.options[selector.selectedIndex]; // Obtener la opción seleccionada
+            var imagenesString = selectedOption.getAttribute("data-imagenes"); // Obtener la cadena de imágenes
+            
+             if (imagenesString) { // Verificar que hay imágenes
+	        	var imagenesArray = imagenesString.split(','); // Convertir la cadena en un array
+	        	imagenesArray.pop();
+		        // Usar un bucle for normal para recorrer las imágenes
+		        for (var i = 0; i < imagenesArray.length; i++) {
+		            
+		            var divElement = document.createElement('div'); //Crear un elemento <div>
+		            var imgElement = document.createElement('img'); // Crear un nuevo elemento <img>
+		            if (i == 0){
+						divElement.className = 'carousel-item active';
+					}else {
+						divElement.className = 'carousel-item';
+					}
+		            
+		            imagenesContainer.appendChild(divElement); // Agregar la imagen al contenedor
+		            
+		            imgElement.src = imagenesArray[i].trim(); // Asignar la URL de la imagen
+		            imgElement.alt = "Imagen del hotel";
+		            imgElement.className = "d-block w-100";
+					divElement.appendChild(imgElement); // Agregar la imagen al contenedor
+		            
+
+            // Estilos para la imagen
+            imgElement.style.maxWidth = '100%'; // Asegurarse de que la imagen no exceda el ancho
+           	imgElement.style.height = 'auto'; // Mantener la relación de aspecto
+           	imgElement.style.display = 'auto'; // O 'inline-block', según el contexto
+            
+            
+        	}
+        	imagenesContainer.style.maxWidth = '100%';
+        	imagenesContainer.style.height = 'auto';
+        	imagenesContainer.style.display = 'auto';
+        	
+    	}
+	});
+	//CON ESTO HACEMOS QUE LA PÁGINA SE CARGUE CON EL CARRUSEL
+    	selector.selectIndex = 0;
     	
+    	var event = new Event('change');
+		selector.dispatchEvent(event);
     </script>
 </html>

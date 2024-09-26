@@ -148,7 +148,6 @@ public class controladorWeb {
 		List<Hotel> hoteles = repositorioHotel.findAll();
 		model.addAttribute("id", id);
 		model.addAttribute("hoteles", hoteles);
-		model.addAttribute("hotel", hoteles.get(0));
 		return "formularioNuevaReserva";
 		
 	}
