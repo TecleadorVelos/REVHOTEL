@@ -659,6 +659,45 @@ public class controladorWeb {
 			return "error";
 		}
 	}
+	//GESTIÓN RESERVAS 
+	@GetMapping("/gestionreservas/{id}/{habitacionId}")
+	public String gestionarReservasHab(Model model, @PathVariable Long id, @PathVariable Long habitacionId) {
+		
+		Optional<Hotel> ophot = this.repositorioHotel.findById(id);
+		Optional<Habitacion> ophab = this.repositorioHabitacion.findById(habitacionId);
+		
+		
+		Optional<List<Reserva>> oplista = repositorioReservas.findByHabitacion(ophab.get());
+		model.addAttribute("hotelNombre", ophot.get().getNombre());
+		model.addAttribute("habitacionNombre", ophab.get().getNumero());
+		model.addAttribute("reservas", oplista.get());
+		
+		return "gestionReservas";
+		
+	}
+	@GetMapping("/consultarreservas")
+	public String consultarreservas(Model model) {
+		
+		
+		model.addAttribute("reservas", this.repositorioReservas.findAll());
+		model.addAttribute("listahoteles", this.repositorioHotel.findAll());
+		//model.addAttribute("listahab", this.repositorioReservas.findAll());
+		
+		return "gestionGeneralReservas";
+		
+	}
+	@GetMapping("/consultarreservashotel")
+	public String consultarreservashotel(Model model,@RequestParam String selectorHoteles) {
+		
+		Optional<Hotel> ophotel = this.repositorioHotel.findByNombre(selectorHoteles);
+		Hotel hotel = ophotel.get();
+		model.addAttribute("reservas", this.repositorioReservas.findByHotel(hotel).get());
+		model.addAttribute("listahoteles", this.repositorioHotel.findAll());
+		//model.addAttribute("listahab", this.repositorioReservas.findAll());
+		
+		return "gestionGeneralReservas";
+		
+	}
 	@GetMapping("/errorInicioSesion")
 	public String errorInicioSesionUsuario(Model model) {
 		model.addAttribute("message", "Error en el incio de sesión. Las credenciales no coinciden.");

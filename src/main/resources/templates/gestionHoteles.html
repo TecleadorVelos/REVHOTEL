@@ -14,7 +14,7 @@
 	<br>
 	<div class="contenedorPrincipal">
 		<div class="row">
-			<div class="col d-flex justify-content-start">
+			<div class="col-md-4 d-flex justify-content-start">
 			    <form id="crearHotel" method="POST" action="/crearhotel" class="row g-2">
 			    	<div class="col-auto">
 			    		<input id="camponomHotel" type="text" class="form-control" placeholder="Introduce nombre hotel" name="nombrehotel">
@@ -24,7 +24,10 @@
 			    	</div>
 			    </form>
 		    </div>
-		    <div class="col d-flex justify-content-end">
+		    <div class="col-md-4 d-flex justify-content-center">
+			    <a id="btnConsultarReservas" href="/consultarreservas" role="button" class="btn btn-dark" > Consultar Reservas </a>
+		    </div>
+		    <div class="col-md-4 d-flex justify-content-end">
 			    <form id="eliminarHotel" method="POST" action="/borrarhotel" class="row g-2">
 			    	<div class="col-auto">
 			    		<input type="text" class="form-control" placeholder="Introduce identificador" name="id">

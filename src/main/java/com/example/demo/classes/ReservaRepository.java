@@ -10,4 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ReservaRepository extends JpaRepository<Reserva, Long>{
 		
 		Optional<List<Reserva>> findByUsuario(Usuario user);
+		Optional<List<Reserva>> findByHabitacion(Habitacion hab);
+		Optional<List<Reserva>> findByHotel(Hotel hotel);
 }
