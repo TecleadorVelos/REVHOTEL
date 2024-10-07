@@ -6,7 +6,7 @@ on:
       - main  # Esto se ejecuta solo en los pushes a la rama "main"
 jobs:
   test:
-    runs-on:ubuntu-latest
+    runs-on: ubuntu-latest
 
     steps:
     
