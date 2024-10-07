@@ -279,13 +279,13 @@ public class E2ESeleniumAdminTests {
 	public void borrarHabitacionTest() {
 		
 		this.iniciarSesionAdmin();
-		// dormir(3000); //delay de 3 segundos
+		dormir(3000); //delay de 3 segundos
 		 
 		driver.findElement(By.id("accesoGestionHoteles")).click();
-		//dormir(3000);
+		dormir(3000);
 		
 		driver.findElement(By.id("tablaHoteles")).findElement(By.xpath(".//td[1]")).click();
-		//dormir(3000);
+		dormir(3000);
 		
 		//cuantos elementos tiene la tabla
 		WebElement tabla = driver.findElement(By.id("tablaHabitaciones"));
