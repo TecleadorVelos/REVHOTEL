@@ -20,6 +20,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -38,8 +39,11 @@ public class E2ESeleniumAdminTests {
 	@BeforeEach
 	public void setUp() {
 		// Configura el WebDriver con WebDriverManager (descarga automáticamente el driver)
-        WebDriverManager.edgedriver().setup();;
-        driver = new EdgeDriver();
+		
+        WebDriverManager.edgedriver().setup();
+        EdgeOptions options = new EdgeOptions();
+        options.addArguments("--headless");
+        driver = new EdgeDriver(options);
 	}
 	@AfterEach
 	public void closeTest(){
