@@ -9,6 +9,7 @@ jobs:
     runs-on:ubuntu-latest
 
     steps:
+    
       - uses: actions/checkout@v2
 
       - name: Activa JDK 17
@@ -16,5 +17,7 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '17'
-          -run: mvn -Dtest=E2ESeleniumAdminTests test
+
+      - name: Ejecuta tests de Admin    
+        run: mvn -Dtest=E2ESeleniumAdminTests test
       
