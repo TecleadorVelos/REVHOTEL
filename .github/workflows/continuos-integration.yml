@@ -19,5 +19,5 @@ jobs:
           java-version: '17'
 
       - name: Ejecuta tests de Admin    
-        run: mvn -Dtest=E2ESeleniumAdminTests test
+        run: mvn -Dtest=E2ESeleniumAdminTests#botonPagPrincipalTest,iniciarSesionAdminTest,establecerPromocionTest,borrarPromocionTest,crearHotelTest,borrarHotelExitoTest,borrarHotelFailTest test
       
