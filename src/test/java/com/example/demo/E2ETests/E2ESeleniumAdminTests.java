@@ -320,8 +320,8 @@ public class E2ESeleniumAdminTests {
 		WebElement nombreUsuario = driver.findElement(By.id("nombreUsuario"));
 		WebElement contrasena = driver.findElement(By.id("contrasena"));
 		
-		nombreUsuario.sendKeys("admin2");
-		contrasena.sendKeys("admin2");
+		nombreUsuario.sendKeys("admin");
+		contrasena.sendKeys("admin");
 		
 		driver.findElement(By.id("enviarForm")).click();
 	}
